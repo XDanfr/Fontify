@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import { mkdir, rm, cp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, rm, cp, readFile, writeFile, readdir } from "node:fs/promises";
 const { version } = JSON.parse(await readFile("package.json"));
 for (const browser of ["chrome", "firefox"]) {
   const outdir = `dist/${browser}`;
@@ -9,6 +9,31 @@ for (const browser of ["chrome", "firefox"]) {
   await cp("data/catalogue.json", `${outdir}/catalogue.json`);
   await cp("LICENSE", `${outdir}/LICENSE`);
   await cp("THIRD_PARTY_NOTICES.md", `${outdir}/THIRD_PARTY_NOTICES.md`);
+  await mkdir(`${outdir}/licenses`, { recursive: true });
+  for (const name of [
+    "@m3e/web",
+    "lit",
+    "lit-html",
+    "lit-element",
+    "@lit/reactive-element",
+    "tslib",
+    "@material/material-color-utilities",
+    "@floating-ui/dom",
+    "@floating-ui/core",
+    "@floating-ui/utils",
+    "composed-offset-position",
+  ]) {
+    const dir = `node_modules/${name}`;
+    const notices = (await readdir(dir)).filter((file) =>
+      /^(license|licence|copyright|notice)/i.test(file),
+    );
+    if (!notices.length) throw new Error(`Licence notice missing for ${name}`);
+    for (const file of notices)
+      await cp(
+        `${dir}/${file}`,
+        `${outdir}/licenses/${name.replaceAll("/", "_")}-${file}`,
+      );
+  }
   await build({
     entryPoints: ["src/background.js", "src/content.js", "src/ui.js"],
     bundle: true,

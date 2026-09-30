@@ -1,0 +1,82 @@
+name: Build Fontify
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run lint:firefox
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - name: Configure stable Chrome signing key
+        if: github.event_name != 'pull_request'
+        env:
+          CHROME_PRIVATE_KEY: ${{ secrets.CHROME_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          if [ -n "$CHROME_PRIVATE_KEY" ]; then
+            printf '%s' "$CHROME_PRIVATE_KEY" > "$RUNNER_TEMP/fontify.pem"
+            chmod 600 "$RUNNER_TEMP/fontify.pem"
+            echo "CHROME_KEY_PATH=$RUNNER_TEMP/fontify.pem" >> "$GITHUB_ENV"
+          fi
+      - run: npm run package
+      - name: Sign Firefox XPI for unlisted distribution
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        shell: bash
+        run: |
+          if [ -n "$AMO_JWT_ISSUER" ] && [ -n "$AMO_JWT_SECRET" ]; then
+            npx web-ext sign --source-dir dist/firefox --artifacts-dir artifacts/signed --channel unlisted --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+          else
+            echo 'AMO credentials are not configured. The unsigned XPI is available for development.'
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fontify-packages
+          path: |
+            artifacts/*.zip
+            artifacts/*.crx
+            artifacts/*.xpi
+            artifacts/signed/*.xpi
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-test-screenshots
+          path: test-results/*.png
+          if-no-files-found: ignore
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: fontify-packages
+          path: packages
+      - uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            packages/*.zip
+            packages/*.crx
+            packages/*.xpi
+            packages/signed/*.xpi
