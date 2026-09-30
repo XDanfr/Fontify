@@ -22,7 +22,12 @@ let settings,
   contextSnapshot,
   generation = 0;
 const host = location.hostname;
-const properties = ["font-family", "font-weight", "font-style"];
+const properties = [
+  "font-family",
+  "font-weight",
+  "font-style",
+  "font-synthesis",
+];
 const observer = new MutationObserver((records) => {
   if (
     records.some(
@@ -194,6 +199,7 @@ async function apply() {
         "font-family": `"${alias(profile.family)}", sans-serif`,
         "font-weight": String(profile.weight),
         "font-style": profile.style,
+        "font-synthesis": "weight style",
       };
       for (const [p, value] of Object.entries(applied)) {
         el.style.setProperty(p, value, "important");

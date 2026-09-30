@@ -10,7 +10,7 @@ async function font(message) {
     return [
       {
         data: f.data,
-        weight: String(message.weight),
+        weight: f.weight || "400",
         style: f.style || "normal",
       },
     ];

@@ -1,5 +1,6 @@
 import { api } from "./api.js";
 import { alias, fontKey } from "./model.js";
+import { fontMetadata } from "./font-metadata.js";
 export function openFontDB() {
   return new Promise((resolve, reject) => {
     const r = indexedDB.open("fontify-fonts", 1);
@@ -35,9 +36,7 @@ export async function importFont(file) {
   if (!/\.(ttf|otf)$/i.test(file.name) || file.size > 15 * 1024 * 1024)
     throw new Error("Choose a TTF or OTF file smaller than 15 MB.");
   const buffer = await file.arrayBuffer();
-  const magic = new DataView(buffer).getUint32(0);
-  if (![0x00010000, 0x4f54544f, 0x74727565].includes(magic))
-    throw new Error("This file is not a valid TTF or OTF font.");
+  const metadata = fontMetadata(buffer);
   const id = crypto.randomUUID();
   const face = new FontFace(alias(`custom:${id}`), buffer);
   await face.load();
@@ -54,6 +53,7 @@ export async function importFont(file) {
     name: file.name,
     size: file.size,
     custom: true,
+    ...metadata,
     data,
   });
   return { id: `custom:${id}`, family };
@@ -63,7 +63,10 @@ export async function loadFace(profile) {
   if (response?.error) throw new Error(response.error);
   const faces = response.faces || [];
   for (const f of faces) {
-    const face = new FontFace(alias(profile.family), `url(${f.data})`, {
+    const bytes = Uint8Array.from(atob(f.data.split(",")[1]), (c) =>
+      c.charCodeAt(0),
+    );
+    const face = new FontFace(alias(profile.family), bytes, {
       weight: f.weight || String(profile.weight),
       style: f.style || profile.style || "normal",
       ...(f.unicodeRange ? { unicodeRange: f.unicodeRange } : {}),

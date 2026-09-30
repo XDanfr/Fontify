@@ -8,6 +8,10 @@ const font = (await readFile("public/fonts/outfit.ttf")).toString("base64");
 const fixture = `<!doctype html><html><head><style>body{font-family:Arial,sans-serif}.mono{font-family:monospace}.icons{font-family:'Material Icons',sans-serif}.retained{font-family:Georgia}</style></head><body><p id="normal">Hello Fontify <strong id="bold">Bold text</strong> <em id="italic">Italic text</em></p><p class="mono" id="mono">A monospace label</p><pre id="code"><code>const premium = true;</code></pre><span class="icons" id="icon">home</span><p id="inline" style="font-family:Georgia;font-weight:300!important">Keep my original style</p><div id="shadow-host"></div><script>const shadow=document.querySelector('#shadow-host').attachShadow({mode:'open'});shadow.innerHTML='<p id="shadow-text">Shadow text</p>';</script></body></html>`;
 const server = createServer((req, res) => {
   res.setHeader("content-type", "text/html");
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; font-src 'none'",
+  );
   res.end(fixture);
 });
 await new Promise((r) => server.listen(0, "127.0.0.1", r));

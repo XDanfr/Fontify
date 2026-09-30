@@ -710,3 +710,8 @@ textarea {
     scroll-behavior: auto !important;
   }
 }
+
+.preview,
+.font-card .glyph {
+  font-synthesis: weight style;
+}
