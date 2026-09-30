@@ -20,8 +20,20 @@ async function font(message) {
   ).json();
   const entry = catalogue.families.find((f) => f.family === message.family);
   if (!entry) throw new Error("Choose a font from the catalogue.");
-  if (message.style === "italic" && !entry.styles.includes("italic"))
-    message = { ...message, style: "normal" };
+  if (!entry.styles.includes(message.style))
+    message = { ...message, style: entry.styles[0] };
+  const availableWeights =
+    message.style === "italic"
+      ? entry.italicWeights || entry.weights
+      : entry.weights;
+  if (availableWeights.length && !availableWeights.includes(message.weight)) {
+    const weight = availableWeights.reduce((nearest, value) =>
+      Math.abs(value - message.weight) < Math.abs(nearest - message.weight)
+        ? value
+        : nearest,
+    );
+    message = { ...message, weight };
+  }
   const cached = await fontDB(
     "get",
     fontKey(message.family, message.weight, message.style),

@@ -45,6 +45,11 @@ try {
           const parsed = new URL(value);
           const italic = parsed.searchParams.get("family").includes("@1,");
           const weight = parsed.searchParams.get("family").split(",").at(-1);
+          if (
+            parsed.searchParams.get("family").startsWith("Bungee:") &&
+            (weight !== "400" || italic)
+          )
+            return new Response("Unsupported face", { status: 400 });
           return new Response(
             `@font-face {font-family:Fixture;font-style:${italic ? "italic" : "normal"};font-weight:${weight};src:url(https://fonts.gstatic.com/fixture.ttf);}`,
           );
@@ -118,6 +123,28 @@ try {
   await options.waitForFunction(() =>
     document.fonts.check("19px Fontify_4f_75_74_66_69_74"),
   );
+  const fallback = await options.evaluate(() =>
+    chrome.runtime.sendMessage({
+      type: "font",
+      family: "Bungee",
+      weight: 700,
+      style: "italic",
+    }),
+  );
+  assert(!fallback.error);
+  assert.equal(fallback.faces[0].weight, "400");
+  assert.equal(fallback.faces[0].style, "normal");
+  const italicOnly = await options.evaluate(() =>
+    chrome.runtime.sendMessage({
+      type: "font",
+      family: "Molle",
+      weight: 800,
+      style: "normal",
+    }),
+  );
+  assert(!italicOnly.error);
+  assert.equal(italicOnly.faces[0].weight, "400");
+  assert.equal(italicOnly.faces[0].style, "italic");
   await mkdir("test-results", { recursive: true });
   await options.screenshot({
     path: "test-results/options-dark.png",

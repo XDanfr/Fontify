@@ -11,29 +11,9 @@
       "styles": [
         "normal",
         "italic"
-      ]
-    },
-    {
-      "family": "ADLaM Display",
-      "category": "Display",
-      "weights": [
+      ],
+      "italicWeights": [
         400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "AR One Sans",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        500,
-        600,
-        700
-      ],
-      "styles": [
-        "normal"
       ]
     },
     {
@@ -131,6 +111,16 @@
       ]
     },
     {
+      "family": "ADLaM Display",
+      "category": "Display",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
       "family": "Advent Pro",
       "category": "Sans Serif",
       "weights": [
@@ -147,6 +137,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -161,6 +162,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -363,6 +370,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -400,21 +418,14 @@
       "styles": [
         "normal",
         "italic"
-      ]
-    },
-    {
-      "family": "Alegreya SC",
-      "category": "Serif",
-      "weights": [
+      ],
+      "italicWeights": [
         400,
         500,
+        600,
         700,
         800,
         900
-      ],
-      "styles": [
-        "normal",
-        "italic"
       ]
     },
     {
@@ -432,6 +443,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        300,
+        400,
+        500,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -449,6 +469,37 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        300,
+        400,
+        500,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "family": "Alegreya SC",
+      "category": "Serif",
+      "weights": [
+        400,
+        500,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -468,6 +519,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -655,6 +717,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -694,6 +760,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -705,6 +782,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -716,6 +796,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -727,6 +810,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -746,6 +832,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -784,6 +881,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -801,6 +902,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -846,6 +956,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -901,6 +1015,18 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -918,6 +1044,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -933,6 +1068,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -945,6 +1087,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -1158,6 +1304,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -1269,6 +1419,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -1276,6 +1437,19 @@
       "category": "Serif",
       "weights": [
         400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "AR One Sans",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700
       ],
       "styles": [
         "normal"
@@ -1290,6 +1464,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -1339,6 +1516,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -1363,6 +1551,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -1425,6 +1619,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -1457,6 +1657,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -1469,6 +1673,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -1491,6 +1699,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -1521,6 +1733,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -1539,6 +1762,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -1558,6 +1791,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -1668,6 +1912,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -1685,6 +1933,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -1702,6 +1959,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -1799,6 +2065,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -1812,6 +2083,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -1825,6 +2101,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -1844,6 +2125,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -1856,6 +2148,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -1868,93 +2164,10 @@
       "styles": [
         "normal",
         "italic"
-      ]
-    },
-    {
-      "family": "BBH Bartle",
-      "category": "Sans Serif",
-      "weights": [
-        400
       ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "BBH Bogle",
-      "category": "Sans Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "BBH Hegarty",
-      "category": "Sans Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "BIZ UDGothic",
-      "category": "Sans Serif",
-      "weights": [
+      "italicWeights": [
         400,
         700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "BIZ UDMincho",
-      "category": "Serif",
-      "weights": [
-        400,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "BIZ UDPGothic",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "BIZ UDPMincho",
-      "category": "Serif",
-      "weights": [
-        400,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "BJCree",
-      "category": "Serif",
-      "weights": [
-        400,
-        500,
-        600,
-        700
-      ],
-      "styles": [
-        "normal"
       ]
     },
     {
@@ -2041,6 +2254,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -2213,6 +2434,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -2252,6 +2477,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -2271,6 +2507,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -2290,6 +2537,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -2334,6 +2592,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -2384,6 +2648,36 @@
       ]
     },
     {
+      "family": "BBH Bartle",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "BBH Bogle",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "BBH Hegarty",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
       "family": "Be Vietnam Pro",
       "category": "Sans Serif",
       "weights": [
@@ -2400,6 +2694,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -2492,6 +2797,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -2505,6 +2815,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -2563,6 +2878,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -2624,6 +2947,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -3030,6 +3356,74 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "family": "BIZ UDGothic",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "BIZ UDMincho",
+      "category": "Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "BIZ UDPGothic",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "BIZ UDPMincho",
+      "category": "Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "BJCree",
+      "category": "Serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "styles": [
+        "normal"
       ]
     },
     {
@@ -3123,6 +3517,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -3139,6 +3541,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -3171,6 +3581,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -3183,6 +3596,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -3354,6 +3770,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -3521,6 +3943,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -3633,6 +4061,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -3665,6 +4097,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -3697,6 +4133,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -3769,6 +4209,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -3781,6 +4224,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -3837,6 +4284,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -3853,6 +4308,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -3864,6 +4327,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -3904,6 +4370,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -3980,6 +4450,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -4007,6 +4484,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -4029,6 +4509,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -4076,6 +4560,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -4212,6 +4699,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -4230,6 +4727,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -4249,6 +4756,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -4268,6 +4786,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -4344,6 +4873,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -4453,6 +4993,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -4628,6 +5173,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -4643,6 +5195,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -4658,6 +5217,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -4744,6 +5310,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -4756,6 +5326,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -4808,6 +5382,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -4826,6 +5403,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -4839,6 +5426,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        600,
+        700
       ]
     },
     {
@@ -4873,6 +5465,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -4906,61 +5504,6 @@
       ]
     },
     {
-      "family": "DM Mono",
-      "category": "Monospace",
-      "weights": [
-        300,
-        400,
-        500
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "DM Sans",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900,
-        1000
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "DM Serif Display",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "DM Serif Text",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
       "family": "Dai Banna SIL",
       "category": "Serif",
       "weights": [
@@ -4973,6 +5516,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -5236,6 +5786,84 @@
       ]
     },
     {
+      "family": "DM Mono",
+      "category": "Monospace",
+      "weights": [
+        300,
+        400,
+        500
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500
+      ]
+    },
+    {
+      "family": "DM Sans",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        1000
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "family": "DM Serif Display",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400
+      ]
+    },
+    {
+      "family": "DM Serif Text",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400
+      ]
+    },
+    {
       "family": "Do Hyeon",
       "category": "Sans Serif",
       "weights": [
@@ -5375,19 +6003,6 @@
       ]
     },
     {
-      "family": "DynaPuff",
-      "category": "Display",
-      "weights": [
-        400,
-        500,
-        600,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "Dynalight",
       "category": "Display",
       "weights": [
@@ -5398,18 +6013,16 @@
       ]
     },
     {
-      "family": "EB Garamond",
-      "category": "Serif",
+      "family": "DynaPuff",
+      "category": "Display",
       "weights": [
         400,
         500,
         600,
-        700,
-        800
+        700
       ],
       "styles": [
-        "normal",
-        "italic"
+        "normal"
       ]
     },
     {
@@ -5443,6 +6056,28 @@
       ]
     },
     {
+      "family": "EB Garamond",
+      "category": "Serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800
+      ]
+    },
+    {
       "family": "Economica",
       "category": "Sans Serif",
       "weights": [
@@ -5452,6 +6087,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -5716,6 +6355,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -5928,6 +6578,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -5945,6 +6606,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -5962,6 +6632,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6059,6 +6738,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6078,6 +6768,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6092,6 +6793,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -6128,6 +6835,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -6142,6 +6857,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -6153,6 +6874,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -6242,6 +6966,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -6309,6 +7041,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6338,6 +7079,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6357,6 +7109,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6402,6 +7165,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6421,6 +7195,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6440,6 +7225,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6550,6 +7346,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -6581,6 +7380,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -6626,6 +7428,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6711,6 +7524,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -6762,6 +7578,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -6789,28 +7613,6 @@
       ],
       "styles": [
         "normal"
-      ]
-    },
-    {
-      "family": "GFS Didot",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "GFS Neohellenic",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        700
-      ],
-      "styles": [
-        "normal",
-        "italic"
       ]
     },
     {
@@ -6937,6 +7739,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6978,6 +7791,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -6997,6 +7821,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -7021,6 +7856,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -7056,6 +7897,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -7068,6 +7920,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -7080,6 +7936,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -7091,6 +7951,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -7126,6 +7989,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -7161,6 +8033,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -7191,6 +8074,32 @@
       ],
       "styles": [
         "normal"
+      ]
+    },
+    {
+      "family": "GFS Didot",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "GFS Neohellenic",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -7310,6 +8219,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -7388,6 +8307,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -7404,6 +8329,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -7543,6 +8476,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -7602,6 +8546,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -7662,6 +8617,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -7854,6 +8812,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -8152,6 +9121,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -8180,6 +9157,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -8203,6 +9190,36 @@
       ]
     },
     {
+      "family": "Iansui",
+      "category": "Handwriting",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Ibarra Real Nova",
+      "category": "Serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
+      ]
+    },
+    {
       "family": "IBM Plex Mono",
       "category": "Monospace",
       "weights": [
@@ -8217,6 +9234,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -8234,6 +9260,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -8267,6 +9302,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -8380,135 +9424,15 @@
       "styles": [
         "normal",
         "italic"
-      ]
-    },
-    {
-      "family": "IM Fell DW Pica",
-      "category": "Serif",
-      "weights": [
-        400
       ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "IM Fell DW Pica SC",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "IM Fell Double Pica",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "IM Fell Double Pica SC",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "IM Fell English",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "IM Fell English SC",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "IM Fell French Canon",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "IM Fell French Canon SC",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "IM Fell Great Primer",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "IM Fell Great Primer SC",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "Iansui",
-      "category": "Handwriting",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "Ibarra Real Nova",
-      "category": "Serif",
-      "weights": [
+      "italicWeights": [
+        100,
+        200,
+        300,
         400,
         500,
         600,
         700
-      ],
-      "styles": [
-        "normal",
-        "italic"
       ]
     },
     {
@@ -8537,6 +9461,126 @@
       "weights": [
         200,
         300,
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "IM Fell Double Pica",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400
+      ]
+    },
+    {
+      "family": "IM Fell Double Pica SC",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "IM Fell DW Pica",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400
+      ]
+    },
+    {
+      "family": "IM Fell DW Pica SC",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "IM Fell English",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400
+      ]
+    },
+    {
+      "family": "IM Fell English SC",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "IM Fell French Canon",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400
+      ]
+    },
+    {
+      "family": "IM Fell French Canon SC",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "IM Fell Great Primer",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400
+      ]
+    },
+    {
+      "family": "IM Fell Great Primer SC",
+      "category": "Serif",
+      "weights": [
         400
       ],
       "styles": [
@@ -8594,6 +9638,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -8681,6 +9732,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -8694,6 +9750,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -8718,6 +9779,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -8729,6 +9796,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -8744,6 +9814,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -8763,6 +9840,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -8782,6 +9870,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -8796,6 +9895,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        700
       ]
     },
     {
@@ -8810,6 +9915,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        700
       ]
     },
     {
@@ -8852,6 +9963,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -9101,6 +10216,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -9178,6 +10303,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -9195,6 +10329,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -9214,6 +10357,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -9246,6 +10400,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -9328,6 +10485,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -9487,6 +10654,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -9504,6 +10682,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -9544,6 +10731,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -9792,22 +10988,6 @@
       ]
     },
     {
-      "family": "KoHo",
-      "category": "Sans Serif",
-      "weights": [
-        200,
-        300,
-        400,
-        500,
-        600,
-        700
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
       "family": "Kodchasan",
       "category": "Sans Serif",
       "weights": [
@@ -9821,6 +11001,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -9848,6 +11036,30 @@
       ],
       "styles": [
         "normal"
+      ]
+    },
+    {
+      "family": "KoHo",
+      "category": "Sans Serif",
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -9986,6 +11198,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -10002,6 +11222,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -10017,6 +11245,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        600,
+        700
       ]
     },
     {
@@ -10068,53 +11303,6 @@
       ]
     },
     {
-      "family": "LINE Seed JP",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        400,
-        700,
-        800
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "LXGW Marker Gothic",
-      "category": "Sans Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "LXGW WenKai Mono TC",
-      "category": "Monospace",
-      "weights": [
-        300,
-        400,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "LXGW WenKai TC",
-      "category": "Handwriting",
-      "weights": [
-        300,
-        400,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "La Belle Aurore",
       "category": "Handwriting",
       "weights": [
@@ -10141,6 +11329,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -10236,6 +11435,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        300,
+        400,
+        700,
+        900
       ]
     },
     {
@@ -10316,6 +11522,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -10526,6 +11735,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -10539,6 +11751,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        600,
+        700
       ]
     },
     {
@@ -10633,6 +11850,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -10647,6 +11870,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -10661,6 +11890,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -10683,6 +11918,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -10702,6 +11940,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -10741,6 +11990,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -10782,6 +12040,22 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
+      ]
+    },
+    {
+      "family": "LINE Seed JP",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        400,
+        700,
+        800
+      ],
+      "styles": [
+        "normal"
       ]
     },
     {
@@ -10819,6 +12093,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -10847,6 +12131,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -10875,6 +12169,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        900
       ]
     },
     {
@@ -10897,6 +12201,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -10964,6 +12272,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -11083,6 +12397,40 @@
       "category": "Handwriting",
       "weights": [
         400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "LXGW Marker Gothic",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "LXGW WenKai Mono TC",
+      "category": "Monospace",
+      "weights": [
+        300,
+        400,
+        700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "LXGW WenKai TC",
+      "category": "Handwriting",
+      "weights": [
+        300,
+        400,
+        700
       ],
       "styles": [
         "normal"
@@ -11333,6 +12681,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -11417,6 +12773,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -11575,6 +12939,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -11602,6 +12970,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -11776,6 +13147,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -11792,6 +13172,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -11937,6 +13325,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -12068,6 +13462,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -12093,10 +13494,14 @@
     {
       "family": "Molle",
       "category": "Handwriting",
-      "weights": [],
+      "weights": [
+        400
+      ],
       "styles": [
-        "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -12151,6 +13556,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -12289,6 +13704,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -12308,6 +13734,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -12327,6 +13764,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -12571,6 +14019,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -12608,6 +14067,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -12633,16 +14103,6 @@
     {
       "family": "Mystery Quest",
       "category": "Display",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "NTR",
-      "category": "Sans Serif",
       "weights": [
         400
       ],
@@ -12820,6 +14280,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -12878,6 +14341,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -12904,6 +14376,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -12927,6 +14407,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        700
       ]
     },
     {
@@ -12997,6 +14482,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -13112,6 +14601,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -13482,6 +14982,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -13641,24 +15152,6 @@
       ]
     },
     {
-      "family": "Noto Sans HK",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "Noto Sans Hanifi Rohingya",
       "category": "Sans Serif",
       "weights": [
@@ -13693,6 +15186,24 @@
     },
     {
       "family": "Noto Sans Hebrew",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Noto Sans HK",
       "category": "Sans Serif",
       "weights": [
         100,
@@ -13750,24 +15261,6 @@
       ]
     },
     {
-      "family": "Noto Sans JP",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "Noto Sans Javanese",
       "category": "Sans Serif",
       "weights": [
@@ -13781,7 +15274,7 @@
       ]
     },
     {
-      "family": "Noto Sans KR",
+      "family": "Noto Sans JP",
       "category": "Sans Serif",
       "weights": [
         100,
@@ -13895,6 +15388,24 @@
       "category": "Sans Serif",
       "weights": [
         400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Noto Sans KR",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ],
       "styles": [
         "normal"
@@ -14235,29 +15746,6 @@
       ]
     },
     {
-      "family": "Noto Sans NKo",
-      "category": "Sans Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "Noto Sans NKo Unjoined",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        500,
-        600,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "Noto Sans Nabataean",
       "category": "Sans Serif",
       "weights": [
@@ -14308,6 +15796,29 @@
       "category": "Sans Serif",
       "weights": [
         400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Noto Sans NKo",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Noto Sans NKo Unjoined",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700
       ],
       "styles": [
         "normal"
@@ -14545,24 +16056,6 @@
       ]
     },
     {
-      "family": "Noto Sans SC",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "Noto Sans Samaritan",
       "category": "Sans Serif",
       "weights": [
@@ -14577,6 +16070,24 @@
       "category": "Sans Serif",
       "weights": [
         400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Noto Sans SC",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ],
       "styles": [
         "normal"
@@ -14789,24 +16300,6 @@
       ]
     },
     {
-      "family": "Noto Sans TC",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "Noto Sans Tagalog",
       "category": "Sans Serif",
       "weights": [
@@ -14905,6 +16398,24 @@
         500,
         600,
         700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Noto Sans TC",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ],
       "styles": [
         "normal"
@@ -15092,6 +16603,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -15185,6 +16707,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -15290,23 +16823,6 @@
       ]
     },
     {
-      "family": "Noto Serif HK",
-      "category": "Serif",
-      "weights": [
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "Noto Serif Hebrew",
       "category": "Serif",
       "weights": [
@@ -15342,7 +16858,7 @@
       ]
     },
     {
-      "family": "Noto Serif JP",
+      "family": "Noto Serif HK",
       "category": "Serif",
       "weights": [
         200,
@@ -15359,7 +16875,7 @@
       ]
     },
     {
-      "family": "Noto Serif KR",
+      "family": "Noto Serif JP",
       "category": "Serif",
       "weights": [
         200,
@@ -15429,6 +16945,23 @@
         500,
         600,
         700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Noto Serif KR",
+      "category": "Serif",
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ],
       "styles": [
         "normal"
@@ -15580,23 +17113,6 @@
       ]
     },
     {
-      "family": "Noto Serif TC",
-      "category": "Serif",
-      "weights": [
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
       "family": "Noto Serif Tamil",
       "category": "Serif",
       "weights": [
@@ -15613,6 +17129,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -15620,6 +17147,23 @@
       "category": "Serif",
       "weights": [
         400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "Noto Serif TC",
+      "category": "Serif",
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ],
       "styles": [
         "normal"
@@ -15833,6 +17377,16 @@
       ]
     },
     {
+      "family": "NTR",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
       "family": "Numans",
       "category": "Sans Serif",
       "weights": [
@@ -15859,6 +17413,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -15878,6 +17443,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -15956,6 +17532,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -16042,6 +17621,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -16088,6 +17675,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -16174,6 +17764,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700,
+        900
       ]
     },
     {
@@ -16203,6 +17798,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -16265,73 +17871,6 @@
       ],
       "styles": [
         "normal"
-      ]
-    },
-    {
-      "family": "PT Mono",
-      "category": "Monospace",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "PT Sans",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        700
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "PT Sans Caption",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "PT Sans Narrow",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        700
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "PT Serif",
-      "category": "Serif",
-      "weights": [
-        400,
-        700
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "PT Serif Caption",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal",
-        "italic"
       ]
     },
     {
@@ -16511,6 +18050,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -16650,6 +18200,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -16673,6 +18234,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -16708,6 +18273,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -16777,6 +18353,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -16815,6 +18399,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -16831,6 +18424,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -16844,6 +18445,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700,
+        900
       ]
     },
     {
@@ -16966,6 +18572,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400
       ]
     },
     {
@@ -16977,6 +18589,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -17520,6 +19135,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400
       ]
     },
     {
@@ -17531,6 +19152,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -17545,6 +19169,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400
       ]
     },
     {
@@ -17556,6 +19186,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -18150,6 +19783,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -18167,6 +19811,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -18235,6 +19888,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -18246,6 +19905,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -18319,6 +19981,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -18454,6 +20127,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -18519,6 +20203,91 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800
+      ]
+    },
+    {
+      "family": "PT Mono",
+      "category": "Monospace",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "PT Sans",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "family": "PT Sans Caption",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "PT Sans Narrow",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "PT Serif",
+      "category": "Serif",
+      "weights": [
+        400,
+        700
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
+      ]
+    },
+    {
+      "family": "PT Serif Caption",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -18538,6 +20307,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -18560,6 +20340,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -18602,6 +20386,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -18625,6 +20413,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -18683,25 +20475,6 @@
       ]
     },
     {
-      "family": "REM",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
       "family": "Racing Sans One",
       "category": "Display",
       "weights": [
@@ -18724,6 +20497,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -18738,6 +20518,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -18749,6 +20535,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -18792,6 +20581,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -18834,6 +20634,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -18910,6 +20714,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -18979,6 +20790,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -18994,6 +20814,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -19009,6 +20836,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -19080,6 +20914,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -19166,6 +21010,36 @@
       ]
     },
     {
+      "family": "REM",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
       "family": "Rethink Sans",
       "category": "Sans Serif",
       "weights": [
@@ -19178,6 +21052,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -19267,6 +21148,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -19286,6 +21178,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -19322,6 +21225,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -19341,6 +21253,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -19418,6 +21341,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -19439,6 +21373,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -19454,6 +21391,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -19465,6 +21409,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -19514,6 +21461,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -19896,85 +21852,6 @@
       ]
     },
     {
-      "family": "SN Pro",
-      "category": "Sans Serif",
-      "weights": [
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "STIX Two Math",
-      "category": "Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "STIX Two Text",
-      "category": "Serif",
-      "weights": [
-        400,
-        500,
-        600,
-        700
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "SUSE",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "SUSE Mono",
-      "category": "Sans Serif",
-      "weights": [
-        100,
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
       "family": "Sacramento",
       "category": "Handwriting",
       "weights": [
@@ -20022,6 +21899,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -20095,6 +21983,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -20116,6 +22015,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -20149,6 +22051,11 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        700
       ]
     },
     {
@@ -20163,6 +22070,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -20197,6 +22110,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -20271,6 +22194,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -20303,6 +22236,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -20332,6 +22269,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -20387,6 +22332,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -20418,6 +22372,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -20558,6 +22515,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -20580,6 +22545,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -20769,6 +22738,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        900
       ]
     },
     {
@@ -20942,6 +22915,34 @@
       ]
     },
     {
+      "family": "SN Pro",
+      "category": "Sans Serif",
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
       "family": "Sniglet",
       "category": "Display",
       "weights": [
@@ -21011,6 +23012,19 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        1,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21032,6 +23046,19 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        1,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21053,6 +23080,19 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        1,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21074,6 +23114,19 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        1,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21112,6 +23165,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -21176,6 +23235,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -21195,6 +23257,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21213,6 +23286,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21231,6 +23314,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21249,6 +23342,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21275,6 +23378,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -21335,6 +23442,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -21352,6 +23468,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -21421,6 +23546,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -21607,6 +23739,36 @@
       ]
     },
     {
+      "family": "STIX Two Math",
+      "category": "Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "STIX Two Text",
+      "category": "Serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
+      ]
+    },
+    {
       "family": "Stoke",
       "category": "Serif",
       "weights": [
@@ -21779,6 +23941,64 @@
       ]
     },
     {
+      "family": "SUSE",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "family": "SUSE Mono",
+      "category": "Sans Serif",
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ]
+    },
+    {
       "family": "Suwannaphum",
       "category": "Serif",
       "weights": [
@@ -21842,34 +24062,6 @@
       "category": "Display",
       "weights": [
         400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "TASA Explorer",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        500,
-        600,
-        700,
-        800
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "TASA Orbiter",
-      "category": "Sans Serif",
-      "weights": [
-        400,
-        500,
-        600,
-        700,
-        800
       ],
       "styles": [
         "normal"
@@ -21954,6 +24146,34 @@
       ]
     },
     {
+      "family": "TASA Explorer",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "TASA Orbiter",
+      "category": "Sans Serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
       "family": "Tauri",
       "category": "Sans Serif",
       "weights": [
@@ -21980,6 +24200,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -21995,6 +24226,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -22083,6 +24321,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -22095,6 +24344,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -22210,6 +24463,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -22231,6 +24488,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22242,6 +24502,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22253,6 +24516,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22264,6 +24530,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22275,6 +24544,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22286,6 +24558,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22297,6 +24572,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22308,6 +24586,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22349,6 +24630,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        600,
+        700
       ]
     },
     {
@@ -22368,6 +24656,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -22387,6 +24686,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -22436,6 +24746,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -22475,6 +24796,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -22529,6 +24853,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -22578,6 +24906,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        700
       ]
     },
     {
@@ -22600,6 +24934,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -22618,6 +24956,16 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -22632,6 +24980,12 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -22752,6 +25106,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -22791,16 +25149,17 @@
       "styles": [
         "normal",
         "italic"
-      ]
-    },
-    {
-      "family": "VT323",
-      "category": "Monospace",
-      "weights": [
-        400
       ],
-      "styles": [
-        "normal"
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -22820,6 +25179,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -22907,6 +25277,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -22967,6 +25344,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -23019,6 +25405,10 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        700
       ]
     },
     {
@@ -23035,6 +25425,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -23061,38 +25459,18 @@
       ]
     },
     {
+      "family": "VT323",
+      "category": "Monospace",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
       "family": "Vujahday Script",
       "category": "Handwriting",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "WDXL Lubrifont JP N",
-      "category": "Sans Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "WDXL Lubrifont SC",
-      "category": "Sans Serif",
-      "weights": [
-        400
-      ],
-      "styles": [
-        "normal"
-      ]
-    },
-    {
-      "family": "WDXL Lubrifont TC",
-      "category": "Sans Serif",
       "weights": [
         400
       ],
@@ -23180,6 +25558,36 @@
       ]
     },
     {
+      "family": "WDXL Lubrifont JP N",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "WDXL Lubrifont SC",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
+      "family": "WDXL Lubrifont TC",
+      "category": "Sans Serif",
+      "weights": [
+        400
+      ],
+      "styles": [
+        "normal"
+      ]
+    },
+    {
       "family": "Wellfleet",
       "category": "Serif",
       "weights": [
@@ -23235,6 +25643,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -23252,6 +25669,15 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -23278,6 +25704,14 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -23307,6 +25741,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400,
+        500,
+        600,
+        700,
+        800
       ]
     },
     {
@@ -23326,6 +25767,17 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -23347,6 +25799,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -23517,6 +25972,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {
@@ -23538,6 +26000,19 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        1,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -23559,6 +26034,19 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        1,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -23580,6 +26068,19 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        1000,
+        100,
+        1,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
       ]
     },
     {
@@ -23683,6 +26184,110 @@
       ]
     },
     {
+      "family": "Zain",
+      "category": "Sans Serif",
+      "weights": [
+        200,
+        300,
+        400,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        300,
+        400
+      ]
+    },
+    {
+      "family": "Zalando Sans",
+      "category": "Sans Serif",
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "family": "Zalando Sans Expanded",
+      "category": "Sans Serif",
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
+      "family": "Zalando Sans SemiExpanded",
+      "category": "Sans Serif",
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "styles": [
+        "normal",
+        "italic"
+      ],
+      "italicWeights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ]
+    },
+    {
       "family": "ZCOOL KuaiLe",
       "category": "Sans Serif",
       "weights": [
@@ -23710,76 +26315,6 @@
       ],
       "styles": [
         "normal"
-      ]
-    },
-    {
-      "family": "Zain",
-      "category": "Sans Serif",
-      "weights": [
-        200,
-        300,
-        400,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "Zalando Sans",
-      "category": "Sans Serif",
-      "weights": [
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "Zalando Sans Expanded",
-      "category": "Sans Serif",
-      "weights": [
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal",
-        "italic"
-      ]
-    },
-    {
-      "family": "Zalando Sans SemiExpanded",
-      "category": "Sans Serif",
-      "weights": [
-        200,
-        300,
-        400,
-        500,
-        600,
-        700,
-        800,
-        900
-      ],
-      "styles": [
-        "normal",
-        "italic"
       ]
     },
     {
@@ -23859,6 +26394,9 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        400
       ]
     },
     {
@@ -23932,6 +26470,13 @@
       "styles": [
         "normal",
         "italic"
+      ],
+      "italicWeights": [
+        300,
+        400,
+        500,
+        600,
+        700
       ]
     },
     {

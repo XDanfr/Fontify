@@ -1,21 +1,36 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 // Public Google Fonts metadata: no API key and no remote executable code.
-const response = await fetch("https://fonts.google.com/metadata/fonts");
-if (!response.ok)
-  throw new Error(`Catalogue request failed: ${response.status}`);
-const metadata = JSON.parse((await response.text()).replace(/^\)\]\}'\s*/, ""));
+let raw;
+if (process.argv[2]) raw = await readFile(process.argv[2], "utf8");
+else {
+  const response = await fetch("https://fonts.google.com/metadata/fonts");
+  if (!response.ok)
+    throw new Error(`Catalogue request failed: ${response.status}`);
+  raw = await response.text();
+}
+const metadata = JSON.parse(raw.replace(/^\)\]\}'\s*/, ""));
 const families = metadata.familyMetadataList
-  .map((f) => ({
-    family: f.family,
-    category: f.category,
-    weights: Object.keys(f.fonts)
+  .map((f) => {
+    const keys = Object.keys(f.fonts);
+    const normal = keys
       .filter((k) => !k.includes("i"))
       .map(Number)
-      .filter(Number.isFinite),
-    styles: Object.keys(f.fonts).some((k) => k.includes("i"))
-      ? ["normal", "italic"]
-      : ["normal"],
-  }))
+      .filter(Number.isFinite);
+    const italic = keys
+      .filter((k) => k.includes("i"))
+      .map((k) => Number(k.replace("i", "")))
+      .filter(Number.isFinite);
+    return {
+      family: f.family,
+      category: f.category,
+      weights: normal.length ? normal : italic,
+      styles: [
+        ...(normal.length ? ["normal"] : []),
+        ...(italic.length ? ["italic"] : []),
+      ],
+      ...(italic.length ? { italicWeights: italic } : {}),
+    };
+  })
   .sort((a, b) => a.family.localeCompare(b.family));
 if (families.length < 1000)
   throw new Error(
