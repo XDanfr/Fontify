@@ -1,62 +1,1323 @@
-import '@m3e/web/theme';
-import '@m3e/web/button';
-import '@m3e/web/switch';
-import '@m3e/web/icon-button';
-import {html,render,nothing} from 'lit';
-import {api,getSettings,saveSettings} from './api.js';
-import {normalise,DEFAULTS,matchesSite,alias,fontKey} from './model.js';
-import {customList,importFont,fontDB,loadFace} from './fonts.js';
-const popup=document.body.dataset.page==='popup';document.body.classList.toggle('popup',popup);
-const app=document.getElementById('app');
-let s=normalise(),catalogue=[],custom=[],section='typography',picker=null,search='',filter='all',limit=60,toast='',toastTimer,activeSite='',status=null,request=null,requestId='',ruleFamily='Outfit',ruleWeight=400,ruleScope='site',ruleKind='font',previewSize=19,previewText='The web looks better your way.',previewError='',ready=false;
-let queue=Promise.resolve();const loaded=new Set();let pickerTrigger;
-const nav=[['typography','Aa','Typography'],['library','◈','Font library'],['exceptions','⊘','Exceptions'],['rules','↳','Overrides'],['preferences','⚙','Preferences']];
-function tell(message){toast=message;clearTimeout(toastTimer);draw();toastTimer=setTimeout(()=>{toast='';draw();},4200);}
-function change(mutator,message='Saved — applied to your open pages'){
-  queue=queue.then(async()=>{const latest=await getSettings();mutator(latest);await saveSettings(latest);s=latest;draw();void preview();if(message)tell(message);}).catch(error=>tell(error.message));return queue;
+import "@m3e/web/theme";
+import "@m3e/web/button";
+import "@m3e/web/switch";
+import "@m3e/web/icon-button";
+import { html, render, nothing } from "lit";
+import { api, getSettings, saveSettings } from "./api.js";
+import { normalise, DEFAULTS, matchesSite, alias, fontKey } from "./model.js";
+import { customList, importFont, fontDB, loadFace } from "./fonts.js";
+const popup = document.body.dataset.page === "popup";
+document.body.classList.toggle("popup", popup);
+const app = document.getElementById("app");
+let s = normalise(),
+  catalogue = [],
+  custom = [],
+  section = "typography",
+  picker = null,
+  search = "",
+  filter = "all",
+  limit = 60,
+  toast = "",
+  toastTimer,
+  activeSite = "",
+  status = null,
+  request = null,
+  requestId = "",
+  ruleFamily = "Outfit",
+  ruleWeight = 400,
+  ruleScope = "site",
+  ruleKind = "font",
+  previewSize = 19,
+  previewText = "The web looks better your way.",
+  previewError = "",
+  ready = false;
+let queue = Promise.resolve();
+const loaded = new Set();
+let pickerTrigger;
+const nav = [
+  ["typography", "Aa", "Typography"],
+  ["library", "◈", "Font library"],
+  ["exceptions", "⊘", "Exceptions"],
+  ["rules", "↳", "Overrides"],
+  ["preferences", "⚙", "Preferences"],
+];
+function tell(message) {
+  toast = message;
+  clearTimeout(toastTimer);
+  draw();
+  toastTimer = setTimeout(() => {
+    toast = "";
+    draw();
+  }, 4200);
 }
-function fontName(id){return id?.startsWith('custom:')?(custom.find(f=>f.id===id)?.family||'Missing custom font'):id||'Same as regular';}
-function weightsFor(id){const entry=catalogue.find(f=>f.family===id);return entry?.weights?.length?entry.weights.filter(w=>w%100===0):[100,200,300,400,500,600,700,800,900];}
-function weightSelect(value,onChange,id='Outfit'){
-  const weights=weightsFor(id);if(!weights.includes(+value))weights.push(+value);weights.sort((a,b)=>a-b);
-  return html`<select aria-label="Font weight" .value=${String(value)} @change=${e=>onChange(+e.target.value)}>${weights.map(w=>html`<option value=${w}>${w} · ${({100:'Thin',200:'Extra light',300:'Light',400:'Regular',500:'Medium',600:'Semibold',700:'Bold',800:'Extra bold',900:'Black'})[w]||'Weight'}</option>`)}</select>`;
+function change(mutator, message = "Saved — applied to your open pages") {
+  queue = queue
+    .then(async () => {
+      const latest = await getSettings();
+      mutator(latest);
+      await saveSettings(latest);
+      s = latest;
+      draw();
+      void preview();
+      if (message) tell(message);
+    })
+    .catch((error) => tell(error.message));
+  return queue;
 }
-function btn(text,click,variant='tonal'){return html`<m3e-button variant=${variant} @click=${click}>${text}</m3e-button>`;}
-function switchControl(label,checked,click){return html`<m3e-switch aria-label=${label} .checked=${checked} @change=${e=>click(e.target.checked)}></m3e-switch>`;}
-function empty(title,text,symbol='Aa'){return html`<div class="empty"><div class="symbol" aria-hidden="true">${symbol}</div><h3>${title}</h3><p class="muted">${text}</p></div>`;}
-function openPicker(which,event){picker=which;search='';filter='all';limit=60;pickerTrigger=event?.currentTarget||document.activeElement;draw();requestAnimationFrame(()=>document.querySelector('#font-search')?.focus());}
-function closePicker(){picker=null;draw();pickerTrigger?.focus();}
-async function choose(family){
-  if(picker==='rule'){ruleFamily=family;const ws=weightsFor(family);if(!ws.includes(ruleWeight))ruleWeight=ws.includes(400)?400:ws[0]||400;closePicker();return;}
-  const slot=picker;closePicker();await change(settings=>{settings[slot].family=family;const ws=weightsFor(family||settings.regular.family);if(!ws.includes(settings[slot].weight))settings[slot].weight=ws.includes(slot==='bold'?700:400)?(slot==='bold'?700:400):ws[0]||400;});
+function fontName(id) {
+  return id?.startsWith("custom:")
+    ? custom.find((f) => f.id === id)?.family || "Missing custom font"
+    : id || "Same as regular";
 }
-function fontButton(which,value){return html`<button class="font-choice" @click=${e=>openPicker(which,e)} aria-label=${`Choose ${which} font`}><span>${fontName(value)}</span><span aria-hidden="true">⌄</span></button>`;}
-function header(){return html`<header class="topbar"><a class="brand" href=${popup?'options.html':'#'} @click=${popup?e=>{e.preventDefault();api.runtime.openOptionsPage();}:()=>{section='typography';draw();}}><img src="icons/48.png" alt=""><span>fontify<span style="color:var(--md-sys-color-primary)">.</span></span></a><div class="top-actions">${!popup?html`<span class="badge">BY XDAN</span>`:nothing}<m3e-icon-button aria-label=${s.theme==='light'?'Switch to dark theme':'Switch to light theme'} @click=${()=>change(v=>{v.theme=s.theme==='light'?'dark':'light';},'Theme updated')}><span aria-hidden="true">${s.theme==='light'?'☾':'☀'}</span></m3e-icon-button></div></header>`;}
-function hero(title,description,mark='Aa'){return html`<div class="hero"><div><p class="eyebrow">YOUR WEB, YOUR TYPE</p><h1>${title}</h1><p class="muted">${description}</p></div>${!popup?html`<div class="hero-mark" aria-hidden="true">${mark}</div>`:nothing}</div>`;}
-function specimen(){return html`<div class="preview"><p class="eyebrow">A LITTLE PREVIEW</p><h2 id="sample-heading">${previewText}</h2><p id="sample-regular" style=${`font-size:${previewSize}px`}>A fresh perspective, one letter at a time. <strong id="sample-bold">Make a statement.</strong><em id="sample-italic">And let the details speak.</em></p><small>Code stays code. Your icons stay themselves.</small>${previewError?html`<div class="preview-error" role="status">${previewError}</div>`:nothing}</div>`;}
-function typography(){return html`${hero('Make yourself at font.','Give the whole web a typeface that feels like you. Keep the structure. Change the character.')}<div class="panel"><div class="settings-row"><div><h3>Fontify the web</h3><p class="muted">Apply your fonts on every site, except your exceptions.</p></div>${switchControl('Enable Fontify',s.enabled,v=>change(x=>{x.enabled=v;}))}</div></div><div class="cards">${['regular','bold','italic'].map((slot,i)=>html`<div class="font-card"><p class="eyebrow">${['The everyday','The emphasis','The expression'][i]}</p><div class="glyph" style=${slot==='italic'?'font-style:italic':slot==='bold'?'font-weight:750':''}>${['Aa','Bb','Ii'][i]}</div>${fontButton(slot,s[slot].family)}<label class="field"><span>${slot[0].toUpperCase()+slot.slice(1)} weight</span>${weightSelect(s[slot].weight,v=>change(x=>{x[slot].weight=v;}),s[slot].family||s.regular.family)}</label></div>`)}</div><div class="spacer"></div>${specimen()}<div class="panel" style="margin-top:16px"><div class="two-col"><label class="field"><span>Your preview text</span><input .value=${previewText} maxlength="200" @input=${e=>{previewText=e.target.value;draw();void preview();}}></label><label class="field"><span>Preview size</span><div class="range-row"><input type="range" min="14" max="32" .value=${String(previewSize)} @input=${e=>{previewSize=+e.target.value;draw();void preview();}}><output>${previewSize}</output></div></label></div><p class="note">Bold and italic can each have their own typeface. “Same as regular” keeps the family consistent while using its selected weight and italic style. Bold italics use the italic profile.</p></div>`;}
-function popupView(){const excluded=activeSite&&s.exceptions.sites.some(p=>matchesSite(activeSite,p));return html`${hero('Your web.\nYour type.','A small change. A whole new feeling.')}<div class="panel"><div class="settings-row"><div><h3>Fontify is ${s.enabled?'on':'paused'}</h3><p class="muted">${status?.count?`${status.count} text elements restyled`:status?.failures?'A font could not load — see settings':activeSite?(excluded?'This site is an exception':'Ready for this site'):'Open a website to get started'}</p></div>${switchControl('Enable Fontify',s.enabled,v=>change(x=>{x.enabled=v;}))}</div><div class="field"><span>Regular typeface</span>${fontButton('regular',s.regular.family)}</div></div>${specimen()}${activeSite?html`<div class="row between"><div><span class="eyebrow">THIS WEBSITE</span><p class="muted" style="font-size:13px;max-width:190px;overflow-wrap:anywhere">${activeSite}</p></div>${btn(excluded?'Resume here':'Pause here',()=>change(x=>{x.exceptions.sites=excluded?x.exceptions.sites.filter(p=>!matchesSite(activeSite,p)):[...x.exceptions.sites,activeSite];}))}</div>`:html`<p class="muted" style="font-size:12px">Browser settings, stores and other protected pages cannot be restyled.</p>`}<div class="footer"><span class="footer-credit">MADE BY XDAN</span>${btn('All settings ↗',()=>api.runtime.openOptionsPage(),'filled')}</div>`;}
-async function upload(event){const files=[...event.target.files];for(const file of files){try{await importFont(file);custom=await customList();await api.storage.local.set({fontsChanged:Date.now()});tell(`${file.name} added to your library`);}catch(error){tell(error.message);}}event.target.value='';draw();}
-async function removeCustom(font){if(!confirm(`Remove ${font.family}? Profiles and overrides using it will return to Outfit.`))return;await change(x=>{for(const slot of ['regular','bold','italic'])if(x[slot].family===font.id)x[slot].family=slot==='regular'?'Outfit':'';x.rules=x.rules.filter(r=>r.family!==font.id);x.favourites=x.favourites.filter(f=>f!==font.id);},'Font removed');await fontDB('delete',font.id);custom=await customList();await api.storage.local.set({fontsChanged:Date.now()});draw();}
-function library(){return html`${hero('Find your type.','An entire world of letterforms. All Google Fonts, and the ones you bring along.','Fg')}<div class="panel"><div class="row between"><div><h2>${catalogue.length.toLocaleString()} families. One you.</h2><p class="muted" style="margin-top:8px">Search by name, explore a category, or keep your favourites close.</p></div>${btn('Explore fonts',e=>openPicker('regular',e),'filled')}</div><p class="note">Choosing a font here sets your regular typeface. Google fonts download on demand and are cached on your device. Custom fonts never leave your browser.</p></div><div class="panel"><h2>Your own collection</h2><div class="upload"><h3>Drop in a little personality.</h3><p class="muted">TTF or OTF · Up to 15 MB per file · Multiple files welcome</p><input type="file" accept=".ttf,.otf" multiple aria-label="Upload custom fonts" @change=${upload}></div><div class="list">${custom.length?custom.map(f=>html`<div class="list-item"><div class="details"><strong>${f.family}</strong><p class="muted">${f.name} · ${(f.size/1024).toFixed(0)} KB</p></div><div class="row">${btn('Use',()=>change(x=>{x.regular.family=f.id;}))}<button class="icon-btn" aria-label=${`Remove ${f.family}`} @click=${()=>removeCustom(f)}>×</button></div></div>`):empty('A collection waiting to happen.','Add a font file to make it available everywhere in Fontify.','◈')}</div></div>`;}
-async function addException(){const type=document.getElementById('exception-type').value;let value=document.getElementById('exception-value').value.trim();if(!value)return tell('Enter an exception first.');if(type==='sites'){value=value.toLowerCase().replace(/^https?:\/\//,'').replace(/\/.*$/,'');if(!/^(\*\.)?[a-z0-9.-]+(?::\d+)?$/.test(value))return tell('Use a hostname, such as example.com or *.example.com.');}if(type==='selectors'){try{document.querySelector(value);}catch{return tell('That CSS selector is invalid.');}}await change(x=>{if(!x.exceptions[type].includes(value))x.exceptions[type].push(value);},'Exception added');document.getElementById('exception-value').value='';}
-function exceptions(){return html`${hero('Some things stay.','Leave favourite sites, specific fonts, and selected page elements exactly as they are.','Ø')}<div class="panel"><h2>Add an exception</h2><p class="muted" style="margin-top:8px">Exceptions always take priority over your saved overrides.</p><div class="spacer"></div><div class="form-grid"><label class="field"><span>Exception type</span><select id="exception-type"><option value="sites">Website</option><option value="fonts">Font family</option><option value="selectors">CSS selector</option></select></label><label class="field"><span>Hostname, family, or selector</span><input id="exception-value" placeholder="*.example.com" @keydown=${e=>{if(e.key==='Enter')void addException();}}></label>${btn('Add exception',addException,'filled')}</div><p class="note">Website: <b>example.com</b> for one host, <b>*.example.com</b> for it and its subdomains. Font: the original family name, such as Arial. Selector: <b>.brand-name</b> or <b>#editor</b>, matched on every site.</p></div>${['sites','fonts','selectors'].map((type,i)=>html`<div class="panel"><div class="panel-head row between"><h2>${['Websites','Font families','Page elements'][i]}</h2><span class="pill">${s.exceptions[type].length}</span></div><div class="list">${s.exceptions[type].length?s.exceptions[type].map(v=>html`<div class="list-item"><span>${v}</span><button class="icon-btn" aria-label=${`Remove exception ${v}`} @click=${()=>change(x=>{x.exceptions[type]=x.exceptions[type].filter(item=>item!==v);},'Exception removed')}>×</button></div>`):empty('Nothing excluded here.',['Pause a site from the popup, or add its hostname above.','Right-click selected text → Fontify → Keep this font unchanged.','Add a CSS selector to preserve matching elements and their descendants.'][i],'⊘')}</div></div>`)}`;}
-async function saveRule(){if(!request)return;const kind=ruleKind;if(kind==='block'&&request.shadow)return tell('Persistent block selectors cannot reach inside a shadow root. Choose a font-family override instead.');await change(x=>{x.rules.push({id:crypto.randomUUID(),kind,target:kind==='font'?request.family:request.selector,site:kind==='block'||ruleScope==='site'?request.site:'*',family:ruleFamily,weight:ruleWeight,label:request.text});},'Override saved — return to your page to see it');await api.storage.local.remove(`request:${requestId}`);request=null;history.replaceState(null,'','options.html');section='rules';draw();}
-function composer(){return request?html`<section class="panel override-panel"><p class="eyebrow">MAKE IT YOURS</p><h2>Override ${request.family}</h2><p class="muted">Selected on ${request.site}</p><blockquote>${request.text}</blockquote><div class="two-col"><label class="field"><span>What should change?</span><select .value=${ruleKind} @change=${e=>{ruleKind=e.target.value;draw();}}><option value="font">Every occurrence of this font</option><option value="block">Only this text / code block</option></select></label><label class="field"><span>Where?</span><select .value=${ruleScope} ?disabled=${ruleKind==='block'} @change=${e=>{ruleScope=e.target.value;}}><option value="site">This website</option><option value="global">All websites</option></select></label><label class="field"><span>Replacement typeface</span>${fontButton('rule',ruleFamily)}</label><label class="field"><span>Replacement weight</span>${weightSelect(ruleWeight,v=>{ruleWeight=v;draw();},ruleFamily)}</label></div><p class="note">An explicit override can restyle code and monospace text. A block rule follows its CSS selector; major changes to the page layout may require recreating it. Exceptions still win.</p><div class="row">${btn('Save override',saveRule,'filled')}${btn('Cancel',async()=>{await api.storage.local.remove(`request:${requestId}`);request=null;history.replaceState(null,'','options.html');draw();},'text')}</div></section>`:nothing;}
-function rules(){return html`${hero('A few personal touches.','Fine-tune a font family or a single block. Your latest matching override takes priority.','↳')}${composer()}<div class="panel"><h2>Saved overrides</h2><p class="muted" style="margin:8px 0 20px">Highlight text on any page, then right-click → Fontify to create one.</p><div class="list">${s.rules.length?[...s.rules].reverse().map(r=>html`<div class="list-item"><div class="details"><strong>${r.kind==='font'?r.target:'Text / code block'} → ${fontName(r.family)}</strong><p class="muted">${r.site==='*'?'Every website':r.site} · Weight ${r.weight} · ${r.kind==='font'?'Font family':r.target}</p><p class="muted">${r.label||''}</p></div><div class="row">${btn('Edit',()=>{editingRule(r);})}<button class="icon-btn" aria-label=${`Remove override ${r.target}`} @click=${()=>change(x=>{x.rules=x.rules.filter(item=>item.id!==r.id);},'Override removed')}>×</button></div></div>`):empty('The details are yours to decide.','Select some text, right-click, and choose whether to replace its font family or just that text or code block.','↳')}</div></div>`;}
-let editing=null;
-function editingRule(rule){editing=rule;ruleFamily=rule.family;ruleWeight=rule.weight;draw();}
-function editDialog(){return editing?html`<div class="dialog"><section class="picker" role="dialog" aria-modal="true" aria-labelledby="edit-title"><div class="picker-head"><h2 id="edit-title">Refine your override</h2><p class="muted">${editing.target} · ${editing.site}</p><label class="field"><span>Replacement typeface</span>${fontButton('rule',ruleFamily)}</label><label class="field"><span>Weight</span>${weightSelect(ruleWeight,v=>{ruleWeight=v;draw();},ruleFamily)}</label><div class="row" style="margin-top:20px">${btn('Save changes',async()=>{const id=editing.id;await change(x=>{const rule=x.rules.find(r=>r.id===id);if(rule){rule.family=ruleFamily;rule.weight=ruleWeight;}},'Override updated');editing=null;draw();},'filled')}${btn('Cancel',()=>{editing=null;draw();},'text')}</div></div></section></div>`:nothing;}
-async function exportSettings(){const backup={app:'Fontify',version:1,settings:s,customFonts:(await fontDB('getAll')).filter(f=>f.custom)};const url=URL.createObjectURL(new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='fontify-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);tell('Backup exported, including your custom fonts');}
-async function restoreBackup(e){try{const file=e.target.files[0];if(!file)return;if(file.size>80*1024*1024)throw new Error('Backup is too large (80 MB limit).');const data=JSON.parse(await file.text());if(data.app!=='Fontify'||data.version!==1||!data.settings)throw new Error('Choose a valid Fontify backup.');if(!confirm('Replace your settings with this backup? Existing custom fonts will stay in your library.'))return;const fonts=data.customFonts||[];if(!Array.isArray(fonts)||fonts.length>100)throw new Error('Invalid custom font list.');for(const f of fonts){if(!f.custom||!/^custom:[a-z0-9-]+$/i.test(f.id)||typeof f.family!=='string'||typeof f.data!=='string'||!/^data:[^;,]*;base64,[A-Za-z0-9+/=]+$/.test(f.data)||f.data.length>22*1024*1024)throw new Error('A custom font in this backup is invalid.');const test=new FontFace(alias(f.id),`url(${f.data})`);await test.load();}for(const f of fonts)await fontDB('put',f);await saveSettings(normalise(data.settings));s=await getSettings();custom=await customList();await api.storage.local.set({fontsChanged:Date.now()});draw();void preview();tell('Your collection is restored');}catch(error){tell(error.message);}finally{e.target.value='';}}
-async function clearCache(){const fonts=await fontDB('getAll');await Promise.all(fonts.filter(f=>!f.custom).map(f=>fontDB('delete',f.id)));tell('Google font cache cleared. Custom fonts are safe.');}
-function preferences(){return html`${hero('Just how you like it.','A quieter web, a brighter interface, or a fresh start. You’re in control.','✳')}<div class="panel"><h2>Appearance & downloads</h2><div class="settings-row"><div><h3>Colour mode</h3><p class="muted">The corner toggle switches between light and dark.</p></div><select aria-label="Colour mode" style="width:150px" .value=${s.theme} @change=${e=>change(x=>{x.theme=e.target.value;},'Theme updated')}><option value="dark">Dark</option><option value="light">Light</option><option value="auto">System</option></select></div><div class="settings-row"><div><h3>Google Fonts downloads</h3><p class="muted">Download selected fonts from Google. Turn off for cached and custom fonts only.</p></div>${switchControl('Allow Google Fonts downloads',s.onlineFonts,v=>change(x=>{x.onlineFonts=v;}))}</div><div class="settings-row"><div><h3>Downloaded font cache</h3><p class="muted">Free up local storage. Files download again when you use them.</p></div>${btn('Clear cache',clearCache,'outlined')}</div></div><div class="panel"><h2>Your settings, to go.</h2><p class="muted" style="margin:10px 0 20px">Back up your settings, overrides, exceptions and custom font files. Downloads from Google are excluded.</p><div class="row">${btn('Export backup',exportSettings,'filled')}${btn('Import backup',()=>document.getElementById('backup-file').click())}<input class="hidden" id="backup-file" type="file" accept="application/json,.json" @change=${restoreBackup}></div><div class="settings-row" style="margin-top:20px"><div><h3>Start fresh</h3><p class="muted">Reset settings and rules. Keep uploaded fonts.</p></div>${btn('Reset settings',()=>{if(confirm('Reset your typography, exceptions and overrides? Uploaded fonts will stay.'))void change(x=>{Object.assign(x,structuredClone(DEFAULTS));},'Settings reset');},'outlined')}</div></div><div class="panel"><h2>Made for your eyes. By XDan.</h2><p class="muted" style="margin:12px 0">Fontify 1.0.0 · MIT licensed · Built with matraic’s M3E components.</p><p class="muted">No analytics. No accounts. No browsing history stored. Your settings and font files stay in this browser. Downloading a Google font sends its family and style to Google, along with normal network information. It sends no selected text or page URL.</p><p class="note">Fontify works on normal web pages, including dynamically added text and open shadow roots. Browser pages, extension stores, PDF viewers, canvas text and closed shadow roots are outside its reach. Page fonts are changed only after a replacement font loads successfully.</p><div class="row" style="margin-top:20px"><a href="https://github.com/XDanfr/Fontify" target="_blank" rel="noopener noreferrer">Source & feedback ↗</a><a href="https://matraic.github.io/m3e/" target="_blank" rel="noopener noreferrer">M3E ↗</a></div></div>`;}
-function results(){let list=[...custom.map(f=>({family:f.family,id:f.id,category:'custom'})),...catalogue.map(f=>({...f,id:f.family}))];const term=search.trim().toLowerCase();list=list.filter(f=>(!term||f.family.toLowerCase().includes(term))&&(filter==='all'||(filter==='favourites'?s.favourites.includes(f.id):f.category.toLowerCase()===filter)));return list;}
-function pickerDialog(){if(!picker)return nothing;const fonts=results();return html`<div class="dialog" @click=${e=>{if(e.target===e.currentTarget)closePicker();}}><section class="picker" role="dialog" aria-modal="true" aria-labelledby="picker-title"><div class="picker-head"><div class="row between"><h2 id="picker-title">Choose your ${picker==='rule'?'override':picker} font.</h2><button class="icon-btn" aria-label="Close font picker" @click=${closePicker}>×</button></div><p class="muted" style="font-size:13px">${catalogue.length.toLocaleString()} Google families. Yours included.</p><label class="field"><span class="hidden">Search fonts</span><input id="font-search" type="search" aria-label="Search fonts" placeholder="Search for your kind of type…" .value=${search} @input=${e=>{search=e.target.value;limit=60;draw();}}></label><div class="picker-filters" aria-label="Font categories">${[['all','All'],['favourites','★ Saved'],['sans-serif','Sans'],['serif','Serif'],['display','Display'],['handwriting','Handwriting'],['monospace','Mono'],['custom','Custom']].map(([value,label])=>html`<button class="chip" aria-pressed=${filter===value} @click=${()=>{filter=value;limit=60;draw();}}>${label}</button>`)}</div></div><div class="font-results">${picker!=='regular'&&picker!=='rule'?html`<div class="font-result"><button class="choose" @click=${()=>choose('')}><b>Same as regular</b><small>Use ${fontName(s.regular.family)}</small></button></div>`:nothing}${fonts.length?fonts.slice(0,limit).map(f=>html`<div class="font-result"><button class="choose" @click=${()=>choose(f.id)} @pointerenter=${e=>previewResult(f,e.currentTarget)} @focus=${e=>previewResult(f,e.currentTarget)}><b>${f.family}</b><small>${f.category} · ${f.category==='custom'?'On your device':`${f.weights?.length||1} weights${f.styles?.includes('italic')?' · italic':''}`}</small></button><button class=${`icon-btn ${s.favourites.includes(f.id)?'active':''}`} aria-label=${`${s.favourites.includes(f.id)?'Unsave':'Save'} ${f.family}`} aria-pressed=${s.favourites.includes(f.id)} @click=${()=>change(x=>{x.favourites=x.favourites.includes(f.id)?x.favourites.filter(v=>v!==f.id):[...x.favourites,f.id];},'Favourites updated')}>${s.favourites.includes(f.id)?'★':'☆'}</button></div>`):empty('No fonts found.','Try a different name or category.')} ${fonts.length>limit?html`<div style="text-align:center;padding:15px">${btn('Show more',()=>{limit+=60;draw();})}</div>`:nothing}</div><div class="picker-footer"><span>${fonts.length.toLocaleString()} results · Hover or focus to preview</span>${btn('Done',closePicker,'text')}</div></section></div>`;}
-async function previewResult(font,button){try{const weight=weightsFor(font.id).includes(400)?400:weightsFor(font.id)[0]||400;const key=fontKey(font.id,weight,'normal');if(!loaded.has(key)){await loadFace({family:font.id,weight,style:'normal'});loaded.add(key);}if(button.isConnected)button.querySelector('b').style.fontFamily=`"${alias(font.id)}", sans-serif`;}catch{/* A failed preview never prevents selecting a font. */}}
-async function preview(){if(!ready)return;previewError='';for(const slot of ['regular','bold','italic']){const family=s[slot].family||s.regular.family,style=slot==='italic'?'italic':'normal',weight=s[slot].weight,key=fontKey(family,weight,style);try{if(!loaded.has(key)){await loadFace({family,weight,style});loaded.add(key);}const target=document.getElementById(`sample-${slot}`);if(target){target.style.fontFamily=`"${alias(family)}", sans-serif`;target.style.fontWeight=String(weight);target.style.fontStyle=style;}if(slot==='regular'){const h=document.getElementById('sample-heading');if(h){h.style.fontFamily=`"${alias(family)}", sans-serif`;h.style.fontWeight=String(weight);}}}catch(error){previewError=error.message;const el=document.querySelector('.preview-error');if(el)el.textContent=previewError;else draw();}}}
-function draw(){render(html`<m3e-theme color="#bca3ff" variant="tonal-spot" scheme=${s.theme} strong-focus><div class="shell">${header()}${!ready?html`<p class="muted">Getting your type together…</p>`:popup?popupView():html`<div class="layout"><aside><nav class="nav" aria-label="Settings">${nav.map(([id,icon,label])=>html`<button aria-current=${section===id?'page':'false'} @click=${()=>{section=id;draw();void preview();}}><span aria-hidden="true">${icon}</span>${label}</button>`)}</nav><p class="nav-note muted">A little personality.<br>Everywhere you read.<br><br><span class="footer-credit">FONTIFY · BY XDAN</span></p></aside><main>${({typography,library,exceptions,rules,preferences})[section]()}</main></div>`}</div>${editing&&!picker?editDialog():nothing}${pickerDialog()}${toast?html`<div class="toast" role="status">${toast}</div>`:nothing}</m3e-theme>`,app);}
-document.addEventListener('keydown',e=>{if((picker||editing)&&e.key==='Escape'){if(picker)closePicker();else{editing=null;draw();}}if((picker||editing)&&e.key==='Tab'){const modal=document.querySelector('[role=dialog]');const focusable=[...modal.querySelectorAll('button,input,select,m3e-button')].filter(el=>!el.disabled&&!el.hasAttribute('disabled'));const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}});
-api.storage.onChanged.addListener(async(changes,area)=>{if(area!=='local')return;if(changes.settings){s=await getSettings();draw();void preview();}if(changes.fontsChanged){custom=await customList();draw();}});
-async function init(){try{s=await getSettings();catalogue=(await(await fetch(api.runtime.getURL('catalogue.json'))).json()).families;custom=await customList();if(popup){const [tab]=await api.tabs.query({active:true,currentWindow:true});if(tab?.url&&/^https?:/.test(tab.url)){activeSite=new URL(tab.url).hostname;try{status=await api.tabs.sendMessage(tab.id,{type:'status'});}catch{status=null;}}}else{requestId=new URLSearchParams(location.hash.slice(1)).get('override')||'';if(requestId){request=(await api.storage.local.get(`request:${requestId}`))[`request:${requestId}`];if(request&&Date.now()-request.created<3600000){ruleKind=request.kind;section='rules';}else request=null;}}ready=true;draw();void preview();}catch(error){tell(`Fontify could not open: ${error.message}`);}}
-draw();void init();
+function weightsFor(id) {
+  const entry = catalogue.find((f) => f.family === id);
+  return entry?.weights?.length
+    ? entry.weights.filter((w) => w % 100 === 0)
+    : [100, 200, 300, 400, 500, 600, 700, 800, 900];
+}
+function weightSelect(value, onChange, id = "Outfit") {
+  const weights = weightsFor(id);
+  if (!weights.includes(+value)) weights.push(+value);
+  weights.sort((a, b) => a - b);
+  return html`<select
+    aria-label="Font weight"
+    .value=${String(value)}
+    @change=${(e) => onChange(+e.target.value)}
+  >
+    ${weights.map(
+      (w) =>
+        html`<option value=${w} ?selected=${w === +value}>
+          ${w} ·
+          ${{
+            100: "Thin",
+            200: "Extra light",
+            300: "Light",
+            400: "Regular",
+            500: "Medium",
+            600: "Semibold",
+            700: "Bold",
+            800: "Extra bold",
+            900: "Black",
+          }[w] || "Weight"}
+        </option>`,
+    )}
+  </select>`;
+}
+function btn(text, click, variant = "tonal") {
+  return html`<m3e-button variant=${variant} @click=${click}
+    >${text}</m3e-button
+  >`;
+}
+function switchControl(label, checked, click) {
+  return html`<m3e-switch
+    aria-label=${label}
+    .checked=${checked}
+    @change=${(e) => click(e.target.checked)}
+  ></m3e-switch>`;
+}
+function empty(title, text, symbol = "Aa") {
+  return html`<div class="empty">
+    <div class="symbol" aria-hidden="true">${symbol}</div>
+    <h3>${title}</h3>
+    <p class="muted">${text}</p>
+  </div>`;
+}
+function openPicker(which, event) {
+  picker = which;
+  search = "";
+  filter = "all";
+  limit = 60;
+  pickerTrigger = event?.currentTarget || document.activeElement;
+  draw();
+  requestAnimationFrame(() => document.querySelector("#font-search")?.focus());
+}
+function closePicker() {
+  picker = null;
+  draw();
+  pickerTrigger?.focus();
+}
+async function choose(family) {
+  if (picker === "rule") {
+    ruleFamily = family;
+    const ws = weightsFor(family);
+    if (!ws.includes(ruleWeight))
+      ruleWeight = ws.includes(400) ? 400 : ws[0] || 400;
+    closePicker();
+    return;
+  }
+  const slot = picker;
+  closePicker();
+  await change((settings) => {
+    settings[slot].family = family;
+    const ws = weightsFor(family || settings.regular.family);
+    if (!ws.includes(settings[slot].weight))
+      settings[slot].weight = ws.includes(slot === "bold" ? 700 : 400)
+        ? slot === "bold"
+          ? 700
+          : 400
+        : ws[0] || 400;
+  });
+}
+function fontButton(which, value) {
+  return html`<button
+    class="font-choice"
+    @click=${(e) => openPicker(which, e)}
+    aria-label=${`Choose ${which} font`}
+  >
+    <span>${fontName(value)}</span><span aria-hidden="true">⌄</span>
+  </button>`;
+}
+function header() {
+  return html`<header class="topbar">
+    <a
+      class="brand"
+      href=${popup ? "options.html" : "#"}
+      @click=${popup
+        ? (e) => {
+            e.preventDefault();
+            api.runtime.openOptionsPage();
+          }
+        : () => {
+            section = "typography";
+            draw();
+          }}
+      ><img src="icons/48.png" alt="" /><span
+        >fontify<span style="color:var(--md-sys-color-primary)">.</span></span
+      ></a
+    >
+    <div class="top-actions">
+      ${!popup
+        ? html`<span class="badge">BY XDAN</span>`
+        : nothing}<m3e-icon-button
+        aria-label=${s.theme === "light"
+          ? "Switch to dark theme"
+          : "Switch to light theme"}
+        @click=${() =>
+          change((v) => {
+            v.theme = s.theme === "light" ? "dark" : "light";
+          }, "Theme updated")}
+        ><span aria-hidden="true"
+          >${s.theme === "light" ? "☾" : "☀"}</span
+        ></m3e-icon-button
+      >
+    </div>
+  </header>`;
+}
+function hero(title, description, mark = "Aa") {
+  return html`<div class="hero">
+    <div>
+      <p class="eyebrow">YOUR WEB, YOUR TYPE</p>
+      <h1>${title}</h1>
+      <p class="muted">${description}</p>
+    </div>
+    ${!popup
+      ? html`<div class="hero-mark" aria-hidden="true">${mark}</div>`
+      : nothing}
+  </div>`;
+}
+function specimen() {
+  return html`<div class="preview">
+    <p class="eyebrow">A LITTLE PREVIEW</p>
+    <h2 id="sample-heading">${previewText}</h2>
+    <p id="sample-regular" style=${`font-size:${previewSize}px`}>
+      A fresh perspective, one letter at a time.
+      <strong id="sample-bold">Make a statement.</strong
+      ><em id="sample-italic">And let the details speak.</em>
+    </p>
+    <small>Code stays code. Your icons stay themselves.</small>${previewError
+      ? html`<div class="preview-error" role="status">${previewError}</div>`
+      : nothing}
+  </div>`;
+}
+function typography() {
+  return html`${hero(
+      "Make yourself at font.",
+      "Give the whole web a typeface that feels like you. Keep the structure. Change the character.",
+    )}
+    <div class="panel">
+      <div class="settings-row">
+        <div>
+          <h3>Fontify the web</h3>
+          <p class="muted">
+            Apply your fonts on every site, except your exceptions.
+          </p>
+        </div>
+        ${switchControl("Enable Fontify", s.enabled, (v) =>
+          change((x) => {
+            x.enabled = v;
+          }),
+        )}
+      </div>
+    </div>
+    <div class="cards">
+      ${["regular", "bold", "italic"].map(
+        (slot, i) =>
+          html`<div class="font-card">
+            <p class="eyebrow">
+              ${["The everyday", "The emphasis", "The expression"][i]}
+            </p>
+            <div
+              class="glyph"
+              style=${slot === "italic"
+                ? "font-style:italic"
+                : slot === "bold"
+                  ? "font-weight:750"
+                  : ""}
+            >
+              ${["Aa", "Bb", "Ii"][i]}
+            </div>
+            ${fontButton(slot, s[slot].family)}<label class="field"
+              ><span>${slot[0].toUpperCase() + slot.slice(1)} weight</span
+              >${weightSelect(
+                s[slot].weight,
+                (v) =>
+                  change((x) => {
+                    x[slot].weight = v;
+                  }),
+                s[slot].family || s.regular.family,
+              )}</label
+            >
+          </div>`,
+      )}
+    </div>
+    <div class="spacer"></div>
+    ${specimen()}
+    <div class="panel" style="margin-top:16px">
+      <div class="two-col">
+        <label class="field"
+          ><span>Your preview text</span
+          ><input
+            .value=${previewText}
+            maxlength="200"
+            @input=${(e) => {
+              previewText = e.target.value;
+              draw();
+              void preview();
+            }} /></label
+        ><label class="field"
+          ><span>Preview size</span>
+          <div class="range-row">
+            <input
+              type="range"
+              min="14"
+              max="32"
+              .value=${String(previewSize)}
+              @input=${(e) => {
+                previewSize = +e.target.value;
+                draw();
+                void preview();
+              }}
+            /><output>${previewSize}</output>
+          </div></label
+        >
+      </div>
+      <p class="note">
+        Bold and italic can each have their own typeface. “Same as regular”
+        keeps the family consistent while using its selected weight and italic
+        style. Bold italics use the italic profile.
+      </p>
+    </div>`;
+}
+function popupView() {
+  const excluded =
+    activeSite && s.exceptions.sites.some((p) => matchesSite(activeSite, p));
+  return html`${hero(
+      "Your web.\nYour type.",
+      "A small change. A whole new feeling.",
+    )}
+    <div class="panel">
+      <div class="settings-row">
+        <div>
+          <h3>Fontify is ${s.enabled ? "on" : "paused"}</h3>
+          <p class="muted">
+            ${status?.count
+              ? `${status.count} text elements restyled`
+              : status?.failures
+                ? "A font could not load — see settings"
+                : activeSite
+                  ? excluded
+                    ? "This site is an exception"
+                    : "Ready for this site"
+                  : "Open a website to get started"}
+          </p>
+        </div>
+        ${switchControl("Enable Fontify", s.enabled, (v) =>
+          change((x) => {
+            x.enabled = v;
+          }),
+        )}
+      </div>
+      <div class="field">
+        <span>Regular typeface</span>${fontButton("regular", s.regular.family)}
+      </div>
+    </div>
+    ${specimen()}${activeSite
+      ? html`<div class="row between">
+          <div>
+            <span class="eyebrow">THIS WEBSITE</span>
+            <p
+              class="muted"
+              style="font-size:13px;max-width:190px;overflow-wrap:anywhere"
+            >
+              ${activeSite}
+            </p>
+          </div>
+          ${btn(excluded ? "Resume here" : "Pause here", () =>
+            change((x) => {
+              x.exceptions.sites = excluded
+                ? x.exceptions.sites.filter((p) => !matchesSite(activeSite, p))
+                : [...x.exceptions.sites, activeSite];
+            }),
+          )}
+        </div>`
+      : html`<p class="muted" style="font-size:12px">
+          Browser settings, stores and other protected pages cannot be restyled.
+        </p>`}
+    <div class="footer">
+      <span class="footer-credit">MADE BY XDAN</span>${btn(
+        "All settings ↗",
+        () => api.runtime.openOptionsPage(),
+        "filled",
+      )}
+    </div>`;
+}
+async function upload(event) {
+  const files = [...event.target.files];
+  for (const file of files) {
+    try {
+      await importFont(file);
+      custom = await customList();
+      await api.storage.local.set({ fontsChanged: Date.now() });
+      tell(`${file.name} added to your library`);
+    } catch (error) {
+      tell(error.message);
+    }
+  }
+  event.target.value = "";
+  draw();
+}
+async function removeCustom(font) {
+  if (
+    !confirm(
+      `Remove ${font.family}? Profiles and overrides using it will return to Outfit.`,
+    )
+  )
+    return;
+  await change((x) => {
+    for (const slot of ["regular", "bold", "italic"])
+      if (x[slot].family === font.id)
+        x[slot].family = slot === "regular" ? "Outfit" : "";
+    x.rules = x.rules.filter((r) => r.family !== font.id);
+    x.favourites = x.favourites.filter((f) => f !== font.id);
+  }, "Font removed");
+  await fontDB("delete", font.id);
+  custom = await customList();
+  await api.storage.local.set({ fontsChanged: Date.now() });
+  draw();
+}
+function library() {
+  return html`${hero(
+      "Find your type.",
+      "An entire world of letterforms. All Google Fonts, and the ones you bring along.",
+      "Fg",
+    )}
+    <div class="panel">
+      <div class="row between">
+        <div>
+          <h2>${catalogue.length.toLocaleString()} families. One you.</h2>
+          <p class="muted" style="margin-top:8px">
+            Search by name, explore a category, or keep your favourites close.
+          </p>
+        </div>
+        ${btn("Explore fonts", (e) => openPicker("regular", e), "filled")}
+      </div>
+      <p class="note">
+        Choosing a font here sets your regular typeface. Google fonts download
+        on demand and are cached on your device. Custom fonts never leave your
+        browser.
+      </p>
+    </div>
+    <div class="panel">
+      <h2>Your own collection</h2>
+      <div class="upload">
+        <h3>Drop in a little personality.</h3>
+        <p class="muted">
+          TTF or OTF · Up to 15 MB per file · Multiple files welcome
+        </p>
+        <input
+          type="file"
+          accept=".ttf,.otf"
+          multiple
+          aria-label="Upload custom fonts"
+          @change=${upload}
+        />
+      </div>
+      <div class="list">
+        ${custom.length
+          ? custom.map(
+              (f) =>
+                html`<div class="list-item">
+                  <div class="details">
+                    <strong>${f.family}</strong>
+                    <p class="muted">
+                      ${f.name} · ${(f.size / 1024).toFixed(0)} KB
+                    </p>
+                  </div>
+                  <div class="row">
+                    ${btn("Use", () =>
+                      change((x) => {
+                        x.regular.family = f.id;
+                      }),
+                    )}<button
+                      class="icon-btn"
+                      aria-label=${`Remove ${f.family}`}
+                      @click=${() => removeCustom(f)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>`,
+            )
+          : empty(
+              "A collection waiting to happen.",
+              "Add a font file to make it available everywhere in Fontify.",
+              "◈",
+            )}
+      </div>
+    </div>`;
+}
+async function addException() {
+  const type = document.getElementById("exception-type").value;
+  let value = document.getElementById("exception-value").value.trim();
+  if (!value) return tell("Enter an exception first.");
+  if (type === "sites") {
+    value = value
+      .toLowerCase()
+      .replace(/^https?:\/\//, "")
+      .replace(/\/.*$/, "");
+    if (!/^(\*\.)?[a-z0-9.-]+(?::\d+)?$/.test(value))
+      return tell("Use a hostname, such as example.com or *.example.com.");
+  }
+  if (type === "selectors") {
+    try {
+      document.querySelector(value);
+    } catch {
+      return tell("That CSS selector is invalid.");
+    }
+  }
+  await change((x) => {
+    if (!x.exceptions[type].includes(value)) x.exceptions[type].push(value);
+  }, "Exception added");
+  document.getElementById("exception-value").value = "";
+}
+function exceptions() {
+  return html`${hero(
+      "Some things stay.",
+      "Leave favourite sites, specific fonts, and selected page elements exactly as they are.",
+      "Ø",
+    )}
+    <div class="panel">
+      <h2>Add an exception</h2>
+      <p class="muted" style="margin-top:8px">
+        Exceptions always take priority over your saved overrides.
+      </p>
+      <div class="spacer"></div>
+      <div class="form-grid">
+        <label class="field"
+          ><span>Exception type</span
+          ><select id="exception-type">
+            <option value="sites">Website</option>
+            <option value="fonts">Font family</option>
+            <option value="selectors">CSS selector</option>
+          </select></label
+        ><label class="field"
+          ><span>Hostname, family, or selector</span
+          ><input
+            id="exception-value"
+            placeholder="*.example.com"
+            @keydown=${(e) => {
+              if (e.key === "Enter") void addException();
+            }} /></label
+        >${btn("Add exception", addException, "filled")}
+      </div>
+      <p class="note">
+        Website: <b>example.com</b> for one host, <b>*.example.com</b> for it
+        and its subdomains. Font: the original family name, such as Arial.
+        Selector: <b>.brand-name</b> or <b>#editor</b>, matched on every site.
+      </p>
+    </div>
+    ${["sites", "fonts", "selectors"].map(
+      (type, i) =>
+        html`<div class="panel">
+          <div class="panel-head row between">
+            <h2>${["Websites", "Font families", "Page elements"][i]}</h2>
+            <span class="pill">${s.exceptions[type].length}</span>
+          </div>
+          <div class="list">
+            ${s.exceptions[type].length
+              ? s.exceptions[type].map(
+                  (v) =>
+                    html`<div class="list-item">
+                      <span>${v}</span
+                      ><button
+                        class="icon-btn"
+                        aria-label=${`Remove exception ${v}`}
+                        @click=${() =>
+                          change((x) => {
+                            x.exceptions[type] = x.exceptions[type].filter(
+                              (item) => item !== v,
+                            );
+                          }, "Exception removed")}
+                      >
+                        ×
+                      </button>
+                    </div>`,
+                )
+              : empty(
+                  "Nothing excluded here.",
+                  [
+                    "Pause a site from the popup, or add its hostname above.",
+                    "Right-click selected text → Fontify → Keep this font unchanged.",
+                    "Add a CSS selector to preserve matching elements and their descendants.",
+                  ][i],
+                  "⊘",
+                )}
+          </div>
+        </div>`,
+    )}`;
+}
+async function saveRule() {
+  if (!request) return;
+  const kind = ruleKind;
+  if (kind === "block" && request.shadow)
+    return tell(
+      "Persistent block selectors cannot reach inside a shadow root. Choose a font-family override instead.",
+    );
+  await change((x) => {
+    x.rules.push({
+      id: crypto.randomUUID(),
+      kind,
+      target: kind === "font" ? request.family : request.selector,
+      site: kind === "block" || ruleScope === "site" ? request.site : "*",
+      family: ruleFamily,
+      weight: ruleWeight,
+      label: request.text,
+    });
+  }, "Override saved — return to your page to see it");
+  await api.storage.local.remove(`request:${requestId}`);
+  request = null;
+  history.replaceState(null, "", "options.html");
+  section = "rules";
+  draw();
+}
+function composer() {
+  return request
+    ? html`<section class="panel override-panel">
+        <p class="eyebrow">MAKE IT YOURS</p>
+        <h2>Override ${request.family}</h2>
+        <p class="muted">Selected on ${request.site}</p>
+        <blockquote>${request.text}</blockquote>
+        <div class="two-col">
+          <label class="field"
+            ><span>What should change?</span
+            ><select
+              .value=${ruleKind}
+              @change=${(e) => {
+                ruleKind = e.target.value;
+                draw();
+              }}
+            >
+              <option value="font" ?selected=${ruleKind === "font"}>
+                Every occurrence of this font
+              </option>
+              <option value="block" ?selected=${ruleKind === "block"}>
+                Only this text / code block
+              </option>
+            </select></label
+          ><label class="field"
+            ><span>Where?</span
+            ><select
+              .value=${ruleScope}
+              ?disabled=${ruleKind === "block"}
+              @change=${(e) => {
+                ruleScope = e.target.value;
+              }}
+            >
+              <option value="site" ?selected=${ruleScope === "site"}>
+                This website
+              </option>
+              <option value="global" ?selected=${ruleScope === "global"}>
+                All websites
+              </option>
+            </select></label
+          ><label class="field"
+            ><span>Replacement typeface</span>${fontButton(
+              "rule",
+              ruleFamily,
+            )}</label
+          ><label class="field"
+            ><span>Replacement weight</span>${weightSelect(
+              ruleWeight,
+              (v) => {
+                ruleWeight = v;
+                draw();
+              },
+              ruleFamily,
+            )}</label
+          >
+        </div>
+        <p class="note">
+          An explicit override can restyle code and monospace text. A block rule
+          follows its CSS selector; major changes to the page layout may require
+          recreating it. Exceptions still win.
+        </p>
+        <div class="row">
+          ${btn("Save override", saveRule, "filled")}${btn(
+            "Cancel",
+            async () => {
+              await api.storage.local.remove(`request:${requestId}`);
+              request = null;
+              history.replaceState(null, "", "options.html");
+              draw();
+            },
+            "text",
+          )}
+        </div>
+      </section>`
+    : nothing;
+}
+function rules() {
+  return html`${hero(
+      "A few personal touches.",
+      "Fine-tune a font family or a single block. Your latest matching override takes priority.",
+      "↳",
+    )}${composer()}
+    <div class="panel">
+      <h2>Saved overrides</h2>
+      <p class="muted" style="margin:8px 0 20px">
+        Highlight text on any page, then right-click → Fontify to create one.
+      </p>
+      <div class="list">
+        ${s.rules.length
+          ? [...s.rules].reverse().map(
+              (r) =>
+                html`<div class="list-item">
+                  <div class="details">
+                    <strong
+                      >${r.kind === "font" ? r.target : "Text / code block"} →
+                      ${fontName(r.family)}</strong
+                    >
+                    <p class="muted">
+                      ${r.site === "*" ? "Every website" : r.site} · Weight
+                      ${r.weight} ·
+                      ${r.kind === "font" ? "Font family" : r.target}
+                    </p>
+                    <p class="muted">${r.label || ""}</p>
+                  </div>
+                  <div class="row">
+                    ${btn("Edit", () => {
+                      editingRule(r);
+                    })}<button
+                      class="icon-btn"
+                      aria-label=${`Remove override ${r.target}`}
+                      @click=${() =>
+                        change((x) => {
+                          x.rules = x.rules.filter((item) => item.id !== r.id);
+                        }, "Override removed")}
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>`,
+            )
+          : empty(
+              "The details are yours to decide.",
+              "Select some text, right-click, and choose whether to replace its font family or just that text or code block.",
+              "↳",
+            )}
+      </div>
+    </div>`;
+}
+let editing = null;
+function editingRule(rule) {
+  editing = rule;
+  ruleFamily = rule.family;
+  ruleWeight = rule.weight;
+  draw();
+}
+function editDialog() {
+  return editing
+    ? html`<div class="dialog">
+        <section
+          class="picker"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="edit-title"
+        >
+          <div class="picker-head">
+            <h2 id="edit-title">Refine your override</h2>
+            <p class="muted">${editing.target} · ${editing.site}</p>
+            <label class="field"
+              ><span>Replacement typeface</span>${fontButton(
+                "rule",
+                ruleFamily,
+              )}</label
+            ><label class="field"
+              ><span>Weight</span>${weightSelect(
+                ruleWeight,
+                (v) => {
+                  ruleWeight = v;
+                  draw();
+                },
+                ruleFamily,
+              )}</label
+            >
+            <div class="row" style="margin-top:20px">
+              ${btn(
+                "Save changes",
+                async () => {
+                  const id = editing.id;
+                  await change((x) => {
+                    const rule = x.rules.find((r) => r.id === id);
+                    if (rule) {
+                      rule.family = ruleFamily;
+                      rule.weight = ruleWeight;
+                    }
+                  }, "Override updated");
+                  editing = null;
+                  draw();
+                },
+                "filled",
+              )}${btn(
+                "Cancel",
+                () => {
+                  editing = null;
+                  draw();
+                },
+                "text",
+              )}
+            </div>
+          </div>
+        </section>
+      </div>`
+    : nothing;
+}
+async function exportSettings() {
+  const backup = {
+    app: "Fontify",
+    version: 1,
+    settings: s,
+    customFonts: (await fontDB("getAll")).filter((f) => f.custom),
+  };
+  const url = URL.createObjectURL(
+    new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" }),
+  );
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fontify-backup.json";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  tell("Backup exported, including your custom fonts");
+}
+async function restoreBackup(e) {
+  try {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 80 * 1024 * 1024)
+      throw new Error("Backup is too large (80 MB limit).");
+    const data = JSON.parse(await file.text());
+    if (data.app !== "Fontify" || data.version !== 1 || !data.settings)
+      throw new Error("Choose a valid Fontify backup.");
+    if (
+      !confirm(
+        "Replace your settings with this backup? Existing custom fonts will stay in your library.",
+      )
+    )
+      return;
+    const fonts = data.customFonts || [];
+    if (!Array.isArray(fonts) || fonts.length > 100)
+      throw new Error("Invalid custom font list.");
+    for (const f of fonts) {
+      if (
+        !f.custom ||
+        !/^custom:[a-z0-9-]+$/i.test(f.id) ||
+        typeof f.family !== "string" ||
+        typeof f.data !== "string" ||
+        !/^data:[^;,]*;base64,[A-Za-z0-9+/=]+$/.test(f.data) ||
+        f.data.length > 22 * 1024 * 1024
+      )
+        throw new Error("A custom font in this backup is invalid.");
+      const test = new FontFace(alias(f.id), `url(${f.data})`);
+      await test.load();
+    }
+    for (const f of fonts) await fontDB("put", f);
+    await saveSettings(normalise(data.settings));
+    s = await getSettings();
+    custom = await customList();
+    await api.storage.local.set({ fontsChanged: Date.now() });
+    draw();
+    void preview();
+    tell("Your collection is restored");
+  } catch (error) {
+    tell(error.message);
+  } finally {
+    e.target.value = "";
+  }
+}
+async function clearCache() {
+  const fonts = await fontDB("getAll");
+  await Promise.all(
+    fonts.filter((f) => !f.custom).map((f) => fontDB("delete", f.id)),
+  );
+  tell("Google font cache cleared. Custom fonts are safe.");
+}
+function preferences() {
+  return html`${hero(
+      "Just how you like it.",
+      "A quieter web, a brighter interface, or a fresh start. You’re in control.",
+      "✳",
+    )}
+    <div class="panel">
+      <h2>Appearance & downloads</h2>
+      <div class="settings-row">
+        <div>
+          <h3>Colour mode</h3>
+          <p class="muted">
+            The corner toggle switches between light and dark.
+          </p>
+        </div>
+        <select
+          aria-label="Colour mode"
+          style="width:150px"
+          .value=${s.theme}
+          @change=${(e) =>
+            change((x) => {
+              x.theme = e.target.value;
+            }, "Theme updated")}
+        >
+          <option value="dark" ?selected=${s.theme === "dark"}>Dark</option>
+          <option value="light" ?selected=${s.theme === "light"}>Light</option>
+          <option value="auto" ?selected=${s.theme === "auto"}>System</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <div>
+          <h3>Google Fonts downloads</h3>
+          <p class="muted">
+            Download selected fonts from Google. Turn off for cached and custom
+            fonts only.
+          </p>
+        </div>
+        ${switchControl("Allow Google Fonts downloads", s.onlineFonts, (v) =>
+          change((x) => {
+            x.onlineFonts = v;
+          }),
+        )}
+      </div>
+      <div class="settings-row">
+        <div>
+          <h3>Downloaded font cache</h3>
+          <p class="muted">
+            Free up local storage. Files download again when you use them.
+          </p>
+        </div>
+        ${btn("Clear cache", clearCache, "outlined")}
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Your settings, to go.</h2>
+      <p class="muted" style="margin:10px 0 20px">
+        Back up your settings, overrides, exceptions and custom font files.
+        Downloads from Google are excluded.
+      </p>
+      <div class="row">
+        ${btn("Export backup", exportSettings, "filled")}${btn(
+          "Import backup",
+          () => document.getElementById("backup-file").click(),
+        )}<input
+          class="hidden"
+          id="backup-file"
+          type="file"
+          accept="application/json,.json"
+          @change=${restoreBackup}
+        />
+      </div>
+      <div class="settings-row" style="margin-top:20px">
+        <div>
+          <h3>Start fresh</h3>
+          <p class="muted">Reset settings and rules. Keep uploaded fonts.</p>
+        </div>
+        ${btn(
+          "Reset settings",
+          () => {
+            if (
+              confirm(
+                "Reset your typography, exceptions and overrides? Uploaded fonts will stay.",
+              )
+            )
+              void change((x) => {
+                Object.assign(x, structuredClone(DEFAULTS));
+              }, "Settings reset");
+          },
+          "outlined",
+        )}
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Made for your eyes. By XDan.</h2>
+      <p class="muted" style="margin:12px 0">
+        Fontify 1.0.0 · MIT licensed · Built with matraic’s M3E components.
+      </p>
+      <p class="muted">
+        No analytics. No accounts. No browsing history stored. Your settings and
+        font files stay in this browser. Downloading a Google font sends its
+        family and style to Google, along with normal network information. It
+        sends no selected text or page URL.
+      </p>
+      <p class="note">
+        Fontify works on normal web pages, including dynamically added text and
+        open shadow roots. Browser pages, extension stores, PDF viewers, canvas
+        text and closed shadow roots are outside its reach. Page fonts are
+        changed only after a replacement font loads successfully.
+      </p>
+      <div class="row" style="margin-top:20px">
+        <a
+          href="https://github.com/XDanfr/Fontify"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Source & feedback ↗</a
+        ><a
+          href="https://matraic.github.io/m3e/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >M3E ↗</a
+        >
+      </div>
+    </div>`;
+}
+function results() {
+  let list = [
+    ...custom.map((f) => ({ family: f.family, id: f.id, category: "custom" })),
+    ...catalogue.map((f) => ({ ...f, id: f.family })),
+  ];
+  const term = search.trim().toLowerCase();
+  list = list.filter(
+    (f) =>
+      (!term || f.family.toLowerCase().includes(term)) &&
+      (filter === "all" ||
+        (filter === "favourites"
+          ? s.favourites.includes(f.id)
+          : f.category.toLowerCase() === filter)),
+  );
+  return list;
+}
+function pickerDialog() {
+  if (!picker) return nothing;
+  const fonts = results();
+  return html`<div
+    class="dialog"
+    @click=${(e) => {
+      if (e.target === e.currentTarget) closePicker();
+    }}
+  >
+    <section
+      class="picker"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="picker-title"
+    >
+      <div class="picker-head">
+        <div class="row between">
+          <h2 id="picker-title">
+            Choose your ${picker === "rule" ? "override" : picker} font.
+          </h2>
+          <button
+            class="icon-btn"
+            aria-label="Close font picker"
+            @click=${closePicker}
+          >
+            ×
+          </button>
+        </div>
+        <p class="muted" style="font-size:13px">
+          ${catalogue.length.toLocaleString()} Google families. Yours included.
+        </p>
+        <label class="field"
+          ><span class="hidden">Search fonts</span
+          ><input
+            id="font-search"
+            type="search"
+            aria-label="Search fonts"
+            placeholder="Search for your kind of type…"
+            .value=${search}
+            @input=${(e) => {
+              search = e.target.value;
+              limit = 60;
+              draw();
+            }}
+        /></label>
+        <div class="picker-filters" aria-label="Font categories">
+          ${[
+            ["all", "All"],
+            ["favourites", "★ Saved"],
+            ["sans-serif", "Sans"],
+            ["serif", "Serif"],
+            ["display", "Display"],
+            ["handwriting", "Handwriting"],
+            ["monospace", "Mono"],
+            ["custom", "Custom"],
+          ].map(
+            ([value, label]) =>
+              html`<button
+                class="chip"
+                aria-pressed=${filter === value}
+                @click=${() => {
+                  filter = value;
+                  limit = 60;
+                  draw();
+                }}
+              >
+                ${label}
+              </button>`,
+          )}
+        </div>
+      </div>
+      <div class="font-results">
+        ${picker !== "regular" && picker !== "rule"
+          ? html`<div class="font-result">
+              <button class="choose" @click=${() => choose("")}>
+                <b>Same as regular</b
+                ><small>Use ${fontName(s.regular.family)}</small>
+              </button>
+            </div>`
+          : nothing}${fonts.length
+          ? fonts.slice(0, limit).map(
+              (f) =>
+                html`<div class="font-result">
+                  <button
+                    class="choose"
+                    @click=${() => choose(f.id)}
+                    @pointerenter=${(e) => previewResult(f, e.currentTarget)}
+                    @focus=${(e) => previewResult(f, e.currentTarget)}
+                  >
+                    <b>${f.family}</b
+                    ><small
+                      >${f.category} ·
+                      ${f.category === "custom"
+                        ? "On your device"
+                        : `${f.weights?.length || 1} weights${f.styles?.includes("italic") ? " · italic" : ""}`}</small
+                    ></button
+                  ><button
+                    class=${`icon-btn ${s.favourites.includes(f.id) ? "active" : ""}`}
+                    aria-label=${`${s.favourites.includes(f.id) ? "Unsave" : "Save"} ${f.family}`}
+                    aria-pressed=${s.favourites.includes(f.id)}
+                    @click=${() =>
+                      change((x) => {
+                        x.favourites = x.favourites.includes(f.id)
+                          ? x.favourites.filter((v) => v !== f.id)
+                          : [...x.favourites, f.id];
+                      }, "Favourites updated")}
+                  >
+                    ${s.favourites.includes(f.id) ? "★" : "☆"}
+                  </button>
+                </div>`,
+            )
+          : empty("No fonts found.", "Try a different name or category.")}
+        ${fonts.length > limit
+          ? html`<div style="text-align:center;padding:15px">
+              ${btn("Show more", () => {
+                limit += 60;
+                draw();
+              })}
+            </div>`
+          : nothing}
+      </div>
+      <div class="picker-footer">
+        <span
+          >${fonts.length.toLocaleString()} results · Hover or focus to
+          preview</span
+        >${btn("Done", closePicker, "text")}
+      </div>
+    </section>
+  </div>`;
+}
+async function previewResult(font, button) {
+  try {
+    const weight = weightsFor(font.id).includes(400)
+      ? 400
+      : weightsFor(font.id)[0] || 400;
+    const key = fontKey(font.id, weight, "normal");
+    if (!loaded.has(key)) {
+      await loadFace({ family: font.id, weight, style: "normal" });
+      loaded.add(key);
+    }
+    if (button.isConnected)
+      button.querySelector("b").style.fontFamily =
+        `"${alias(font.id)}", sans-serif`;
+  } catch {
+    /* A failed preview never prevents selecting a font. */
+  }
+}
+async function preview() {
+  if (!ready) return;
+  previewError = "";
+  for (const slot of ["regular", "bold", "italic"]) {
+    const family = s[slot].family || s.regular.family,
+      style = slot === "italic" ? "italic" : "normal",
+      weight = s[slot].weight,
+      key = fontKey(family, weight, style);
+    try {
+      if (!loaded.has(key)) {
+        await loadFace({ family, weight, style });
+        loaded.add(key);
+      }
+      const target = document.getElementById(`sample-${slot}`);
+      if (target) {
+        target.style.fontFamily = `"${alias(family)}", sans-serif`;
+        target.style.fontWeight = String(weight);
+        target.style.fontStyle = style;
+      }
+      if (slot === "regular") {
+        const h = document.getElementById("sample-heading");
+        if (h) {
+          h.style.fontFamily = `"${alias(family)}", sans-serif`;
+          h.style.fontWeight = String(weight);
+        }
+      }
+    } catch (error) {
+      previewError = error.message;
+      const el = document.querySelector(".preview-error");
+      if (el) el.textContent = previewError;
+      else draw();
+    }
+  }
+}
+function draw() {
+  render(
+    html`<m3e-theme
+      color="#bca3ff"
+      variant="tonal-spot"
+      scheme=${s.theme}
+      strong-focus
+      ><div class="shell">
+        ${header()}${!ready
+          ? html`<p class="muted">Getting your type together…</p>`
+          : popup
+            ? popupView()
+            : html`<div class="layout">
+                <aside>
+                  <nav class="nav" aria-label="Settings">
+                    ${nav.map(
+                      ([id, icon, label]) =>
+                        html`<button
+                          aria-current=${section === id ? "page" : "false"}
+                          @click=${() => {
+                            section = id;
+                            draw();
+                            void preview();
+                          }}
+                        >
+                          <span aria-hidden="true">${icon}</span>${label}
+                        </button>`,
+                    )}
+                  </nav>
+                  <p class="nav-note muted">
+                    A little personality.<br />Everywhere you read.<br /><br /><span
+                      class="footer-credit"
+                      >FONTIFY · BY XDAN</span
+                    >
+                  </p>
+                </aside>
+                <main>
+                  ${{ typography, library, exceptions, rules, preferences }[
+                    section
+                  ]()}
+                </main>
+              </div>`}
+      </div>
+      ${editing && !picker ? editDialog() : nothing}${pickerDialog()}${toast
+        ? html`<div class="toast" role="status">${toast}</div>`
+        : nothing}</m3e-theme
+    >`,
+    app,
+  );
+}
+document.addEventListener("keydown", (e) => {
+  if ((picker || editing) && e.key === "Escape") {
+    if (picker) closePicker();
+    else {
+      editing = null;
+      draw();
+    }
+  }
+  if ((picker || editing) && e.key === "Tab") {
+    const modal = document.querySelector("[role=dialog]");
+    const focusable = [
+      ...modal.querySelectorAll("button,input,select,m3e-button"),
+    ].filter((el) => !el.disabled && !el.hasAttribute("disabled"));
+    const first = focusable[0],
+      last = focusable.at(-1);
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last?.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first?.focus();
+    }
+  }
+});
+api.storage.onChanged.addListener(async (changes, area) => {
+  if (area !== "local") return;
+  if (changes.settings) {
+    s = await getSettings();
+    draw();
+    void preview();
+  }
+  if (changes.fontsChanged) {
+    custom = await customList();
+    draw();
+  }
+});
+async function init() {
+  try {
+    s = await getSettings();
+    catalogue = (
+      await (await fetch(api.runtime.getURL("catalogue.json"))).json()
+    ).families;
+    custom = await customList();
+    if (popup) {
+      const [tab] = await api.tabs.query({ active: true, currentWindow: true });
+      if (tab?.url && /^https?:/.test(tab.url)) {
+        activeSite = new URL(tab.url).hostname;
+        try {
+          status = await api.tabs.sendMessage(tab.id, { type: "status" });
+        } catch {
+          status = null;
+        }
+      }
+    } else {
+      requestId =
+        new URLSearchParams(location.hash.slice(1)).get("override") || "";
+      if (requestId) {
+        request = (await api.storage.local.get(`request:${requestId}`))[
+          `request:${requestId}`
+        ];
+        if (request && Date.now() - request.created < 3600000) {
+          ruleKind = request.kind;
+          ruleFamily = s.regular.family;
+          ruleWeight = s.regular.weight;
+          ruleScope = "site";
+          section = "rules";
+        } else request = null;
+      } else request = null;
+    }
+    ready = true;
+    draw();
+    void preview();
+  } catch (error) {
+    tell(`Fontify could not open: ${error.message}`);
+  }
+}
+if (!popup) window.addEventListener("hashchange", () => void init());
+draw();
+void init();
