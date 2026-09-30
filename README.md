@@ -17,8 +17,8 @@ A Chrome & Firefox extension by **XDan**. Make the web feel like you, with Mater
 
 - Pick from **1,950 Google Fonts families** in a bundled searchable catalogue. Filter by category, save favourites, and preview fonts on hover or keyboard focus. No API key needed.
 - Upload **TTF/OTF** fonts, including variable fonts. Files stay on your device. Static faces keep their original weight and italic descriptors; variable faces retain their weight range.
-- Choose separate **regular, bold and italic** families and weights. Bold italics use the italic profile. If a family has no italic face, the browser can synthesise it.
-- Leave **monospace text, code and icon fonts** alone by default. Detection uses known font families and fixed-pitch measurements.
+- Choose separate **serif, sans-serif, regular, bold and italic** families and weights. Serif/sans-serif settings follow the default when left unset. Explicit bold/italic families override category choices; otherwise their style follows the source text category. Bold italics use the italic profile. If a family has no italic face, the browser can synthesise it.
+- Leave **monospace text, code and icon fonts** alone by default, or enable **Code & monospace** replacement with its own typeface and weight (JetBrains Mono is preselected). Detection uses known font families and fixed-pitch measurements.
 - Highlight text, right-click **Fontify**, and override either its original font family or that text/code block. Choose a replacement font, weight, and scope. Rules persist across reloads; a block rule is scoped to its host.
 - Add exceptions for a **website, font family, or CSS selector**. Exceptions win over overrides, including within restyled parent elements.
 - Pause Fontify globally or on the current site, without reloading. The original inline values and priorities are restored.
@@ -33,7 +33,7 @@ Download the latest **fontify-packages** artifact from [Actions](https://github.
 
 ### Chrome / Chromium
 
-1. Extract `fontify-1.0.0-chrome.zip`.
+1. Extract `fontify-1.1.0-chrome.zip`.
 2. Open `chrome://extensions` and enable **Developer mode**.
 3. Choose **Load unpacked** and select the folder containing `manifest.json`.
 4. Refresh any already-open websites once after installation. Later settings changes apply live.
@@ -42,7 +42,7 @@ A CRX3 package is also built. A self-signed CRX is useful for compatible develop
 
 ### Firefox
 
-1. Extract `fontify-1.0.0-firefox.zip`.
+1. Extract `fontify-1.1.0-firefox.zip`.
 2. Open `about:debugging#/runtime/this-firefox`.
 3. Choose **Load Temporary Add-on** and select `manifest.json`.
 4. Refresh already-open websites once after installation.
@@ -69,10 +69,10 @@ Output:
 | -------------------------------------- | ------------------------------------------------------ |
 | `dist/chrome/`                         | Unpacked Chromium MV3 build; service worker background |
 | `dist/firefox/`                        | Firefox MV3 build; event-page background               |
-| `artifacts/fontify-1.0.0-chrome.zip`   | Chrome development/store upload package                |
-| `artifacts/fontify-1.0.0-firefox.zip`  | Firefox source package                                 |
-| `artifacts/fontify-1.0.0.crx`          | Self-signed CRX3                                       |
-| `artifacts/fontify-1.0.0-unsigned.xpi` | Unsigned Firefox development package                   |
+| `artifacts/fontify-1.1.0-chrome.zip`   | Chrome development/store upload package                |
+| `artifacts/fontify-1.1.0-firefox.zip`  | Firefox source package                                 |
+| `artifacts/fontify-1.1.0.crx`          | Self-signed CRX3                                       |
+| `artifacts/fontify-1.1.0-unsigned.xpi` | Unsigned Firefox development package                   |
 
 `npm run catalogue:update` refreshes the Google Fonts metadata snapshot. Catalogue access is never needed during an ordinary build. Fonts themselves download on demand through the background extension context and are cached in IndexedDB. All executable code and UI assets are bundled locally.
 
@@ -98,7 +98,8 @@ See [release instructions](docs/RELEASING.md) for the exact steps. Store submiss
 
 ## Behaviour and boundaries
 
-- Profiles apply to normal webpage text, form controls, dynamically inserted text, iframes where permitted, and open shadow roots. An explicit saved override can opt code/monospace text into replacement. Icons remain protected.
+- Profiles apply to normal webpage text, form controls, dynamically inserted text, iframes where permitted, and open shadow roots. Enable Code & monospace to restyle fixed-width text everywhere, or use an explicit saved override for individual fonts/blocks. Icons remain protected.
+- Serif/sans-serif classification uses the original CSS font stack, Google Fonts metadata, and known system serif families. Unknown custom fonts use their CSS generic fallback, or the sans-serif/default profile when no category can be inferred. Code elements and measured fixed-pitch fonts use the optional monospace profile.
 - Site patterns use exact hostnames; `*.example.com` includes the parent and its subdomains. Path-specific exceptions are not supported. A most-recent matching override wins; exceptions take priority.
 - Block selectors may stop matching if a website redesigns its DOM. Recreate that rule when needed. Persistent block overrides cannot target inside a shadow root; use a font-family rule there.
 - A font is applied only once its data loads. Failed downloads leave the original page typography in place. If downloads are disabled, uncached Google fonts cannot load; cached/custom fonts remain usable.

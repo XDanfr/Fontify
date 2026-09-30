@@ -28,7 +28,7 @@ Without credentials, the workflow succeeds with an explicitly named **unsigned**
 2. Update visible version text in `src/ui.js` and any versioned examples in the README.
 3. Run unit tests, both builds, Firefox lint and Chromium integration tests.
 4. Commit the version update.
-5. Tag the corresponding commit, for example `git tag v1.0.0`, and push that tag.
+5. Tag the corresponding commit, for example `git tag v1.1.0`, and push that tag.
 6. Verify that the build and Release contain the expected version and signing results.
 
 Do not reuse a Firefox version after it has been submitted to AMO. Do not expose signing secrets to forked pull requests; the workflow does not read credentials in PR runs.
