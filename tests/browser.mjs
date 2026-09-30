@@ -5,7 +5,7 @@ import { readFile, mkdir, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve, join } from "node:path";
 const font = (await readFile("public/fonts/outfit.ttf")).toString("base64");
-const fixture = `<!doctype html><html><head><style>body{font-family:Arial,sans-serif}.mono{font-family:monospace}.icons{font-family:'Material Icons',sans-serif}.retained{font-family:Georgia}</style></head><body><p id="normal">Hello Fontify <strong id="bold">Bold text</strong> <em id="italic">Italic text</em></p><p class="mono" id="mono">A monospace label</p><pre id="code"><code>const premium = true;</code></pre><span class="icons" id="icon">home</span><p id="inline" style="font-family:Georgia;font-weight:300!important">Keep my original style</p><div id="shadow-host"></div><script>const shadow=document.querySelector('#shadow-host').attachShadow({mode:'open'});shadow.innerHTML='<p id="shadow-text">Shadow text</p>';</script></body></html>`;
+const fixture = `<!doctype html><html><head><style>body{font-family:Arial,sans-serif}.mono{font-family:monospace}.icons{font-family:'Material Icons',sans-serif}.retained{font-family:Georgia}</style></head><body><p id="normal">Hello Fontify <span id="kept">Preserve inherited text</span> <strong id="bold">Bold text</strong> <em id="italic">Italic text</em></p><p class="mono" id="mono">A monospace label</p><pre id="code"><code>const premium = true;</code></pre><span class="icons" id="icon">home</span><p id="inline" style="font-family:Georgia;font-weight:300!important">Keep my original style</p><div id="shadow-host"></div><script>const shadow=document.querySelector('#shadow-host').attachShadow({mode:'open'});shadow.innerHTML='<p id="shadow-text">Shadow text</p>';</script></body></html>`;
 const server = createServer((req, res) => {
   res.setHeader("content-type", "text/html");
   res.setHeader(
@@ -169,6 +169,15 @@ try {
       .locator("#inline")
       .evaluate((el) => el.style.getPropertyPriority("font-weight")),
     "important",
+  );
+  await options.locator("#exception-value").fill("#kept");
+  await options
+    .getByRole("button", { name: "Add exception", exact: true })
+    .click();
+  await page.waitForFunction(() =>
+    getComputedStyle(document.querySelector("#kept")).fontFamily.includes(
+      "Arial",
+    ),
   );
   await options.getByRole("button", { name: "Font library" }).click();
   await options

@@ -135,19 +135,39 @@ async function apply() {
       settings.exceptions.sites.some((s) => matchesSite(host, s))
     )
       return;
-    const plans = [];
+    const plans = [],
+      preserved = [];
     for (const el of elements()) {
       if (!directText(el)) continue;
       const style = getComputedStyle(el);
-      if (protectedElement(el, style)) continue;
+      const values = Object.fromEntries(
+        properties.map((p) => [
+          p,
+          [el.style.getPropertyValue(p), el.style.getPropertyPriority(p)],
+        ]),
+      );
+      const preserve = () =>
+        preserved.push({
+          el,
+          values,
+          applied: Object.fromEntries(
+            properties.map((p) => [p, style.getPropertyValue(p)]),
+          ),
+        });
+      if (protectedElement(el, style)) {
+        preserve();
+        continue;
+      }
       const rule = resolveRule(
         settings,
         host,
         firstFamily(style.fontFamily),
         el,
       );
-      if (!rule && (el.closest("pre,code,kbd,samp") || measuredMono(style)))
+      if (!rule && (el.closest("pre,code,kbd,samp") || measuredMono(style))) {
+        preserve();
         continue;
+      }
       const profile = rule
         ? {
             family: rule.family,
@@ -155,16 +175,7 @@ async function apply() {
             style: style.fontStyle === "italic" ? "italic" : "normal",
           }
         : profileFor(style, settings);
-      plans.push({
-        el,
-        profile,
-        values: Object.fromEntries(
-          properties.map((p) => [
-            p,
-            [el.style.getPropertyValue(p), el.style.getPropertyPriority(p)],
-          ]),
-        ),
-      });
+      plans.push({ el, profile, values });
     }
     observe();
     const unique = new Map(
@@ -205,7 +216,19 @@ async function apply() {
         el.style.setProperty(p, value, "important");
         applied[p] = el.style.getPropertyValue(p);
       }
-      originals.set(el, { values, applied });
+      originals.set(el, { values, applied, restyled: true });
+    }
+    // A skipped child still inherits a changed parent: pin its original typography.
+    for (const { el, values, applied } of preserved) {
+      let parent = el.parentElement || el.getRootNode().host;
+      while (parent && !originals.get(parent)?.restyled)
+        parent = parent.parentElement || parent.getRootNode().host;
+      if (!parent || !el.isConnected) continue;
+      for (const [p, value] of Object.entries(applied)) {
+        el.style.setProperty(p, value, "important");
+        applied[p] = el.style.getPropertyValue(p);
+      }
+      originals.set(el, { values, applied, restyled: false });
     }
   } finally {
     observe();
@@ -272,7 +295,7 @@ api.runtime.onMessage.addListener((message, sender, respond) => {
     respond({
       enabled: settings?.enabled,
       excluded: settings?.exceptions.sites.some((s) => matchesSite(host, s)),
-      count: originals.size,
+      count: [...originals.values()].filter((v) => v.restyled).length,
       failures: failures.size,
       site: host,
     });

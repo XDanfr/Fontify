@@ -33,6 +33,18 @@ async function font(message) {
     );
   return fetchGoogleFont(message);
 }
+async function pruneRequests() {
+  const stored = await api.storage.local.get(null);
+  const stale = Object.keys(stored).filter(
+    (key) =>
+      key.startsWith("request:") &&
+      (!stored[key]?.created || Date.now() - stored[key].created > 3600000),
+  );
+  if (stale.length) await api.storage.local.remove(stale);
+}
+void pruneRequests().catch((error) =>
+  console.debug("Fontify request cleanup:", error.message),
+);
 async function menus() {
   await api.contextMenus.removeAll();
   api.contextMenus.create({

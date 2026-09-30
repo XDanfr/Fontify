@@ -1308,7 +1308,10 @@ async function init() {
           ruleWeight = s.regular.weight;
           ruleScope = "site";
           section = "rules";
-        } else request = null;
+        } else {
+          request = null;
+          await api.storage.local.remove(`request:${requestId}`);
+        }
       } else request = null;
     }
     ready = true;
