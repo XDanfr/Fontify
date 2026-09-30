@@ -4,6 +4,7 @@ import {
   isMonospace,
   isIcon,
   profileFor,
+  classifyFont,
   resolveRule,
   matchesSite,
   safeMatches,
@@ -164,17 +165,22 @@ async function apply() {
         firstFamily(style.fontFamily),
         el,
       );
-      if (!rule && (el.closest("pre,code,kbd,samp") || measuredMono(style))) {
+      const mono = !!el.closest("pre,code,kbd,samp") || measuredMono(style);
+      const category = mono
+        ? "monospace"
+        : classifyFont(style.fontFamily, GOOGLE_FONT_CATEGORIES);
+      if (!rule && mono && !settings.monospaceEnabled) {
         preserve();
         continue;
       }
       const profile = rule
         ? {
             family: rule.family,
+            category,
             weight: rule.weight,
             style: style.fontStyle === "italic" ? "italic" : "normal",
           }
-        : profileFor(style, settings);
+        : profileFor(style, settings, category);
       plans.push({ el, profile, values });
     }
     observe();
@@ -207,7 +213,7 @@ async function apply() {
       )
         continue;
       const applied = {
-        "font-family": `"${alias(profile.family)}", sans-serif`,
+        "font-family": `"${alias(profile.family)}", ${categoryFallback(profile.category)}`,
         "font-weight": String(profile.weight),
         "font-style": profile.style,
         "font-synthesis": "weight style",
@@ -238,6 +244,13 @@ async function apply() {
       schedule();
     }
   }
+}
+function categoryFallback(category) {
+  return category === "monospace"
+    ? "monospace"
+    : category === "serif"
+      ? "serif"
+      : "sans-serif";
 }
 function selectorFor(el) {
   const parts = [];

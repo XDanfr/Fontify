@@ -69,3 +69,49 @@ test("font aliases cannot inject CSS", () => {
   assert.equal(firstFamily('"Open Sans", Arial'), "Open Sans");
   assert.match(alias('";}evil'), /^Fontify_[0-9a-f_]+$/);
 });
+
+test("category settings migrate and preserve independent typography", async () => {
+  const { classifyFont } = await import("../src/model.js");
+  const s = normalise({
+    regular: { family: "Inter", weight: 500 },
+    serif: { family: "Lora", weight: 400 },
+    sansSerif: { family: "Roboto", weight: 300 },
+    monospaceEnabled: true,
+    monospace: { family: "JetBrains Mono", weight: 500 },
+  });
+  assert.equal(
+    normalise({ regular: { family: "Inter" } }).monospaceEnabled,
+    false,
+  );
+  assert.equal(classifyFont("Georgia, serif"), "serif");
+  assert.equal(classifyFont("Arial, sans-serif"), "sansSerif");
+  assert.equal(classifyFont("Lora, Arial", { lora: "serif" }), "serif");
+  assert.equal(
+    profileFor({ fontStyle: "normal", fontWeight: "400" }, s, "serif").family,
+    "Lora",
+  );
+  assert.equal(
+    profileFor({ fontStyle: "normal", fontWeight: "700" }, s, "serif").family,
+    "Lora",
+  );
+  assert.equal(
+    profileFor({ fontStyle: "italic", fontWeight: "400" }, s, "sansSerif")
+      .family,
+    "Roboto",
+  );
+  assert.equal(
+    profileFor({ fontStyle: "normal", fontWeight: "400" }, s, "monospace")
+      .family,
+    "JetBrains Mono",
+  );
+  s.bold.family = "Outfit";
+  assert.equal(
+    profileFor({ fontStyle: "normal", fontWeight: "700" }, s, "serif").family,
+    "Outfit",
+  );
+  assert.equal(
+    profileFor({ fontStyle: "normal", fontWeight: "700" }, s, "monospace")
+      .family,
+    "JetBrains Mono",
+  );
+});

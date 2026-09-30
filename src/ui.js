@@ -67,7 +67,7 @@ function change(mutator, message = "Saved — applied to your open pages") {
 function fontName(id) {
   return id?.startsWith("custom:")
     ? custom.find((f) => f.id === id)?.family || "Missing custom font"
-    : id || "Same as regular";
+    : id || "Follow default / category";
 }
 function weightsFor(id) {
   const entry = catalogue.find((f) => f.family === id);
@@ -75,12 +75,13 @@ function weightsFor(id) {
     ? entry.weights.filter((w) => w % 100 === 0)
     : [100, 200, 300, 400, 500, 600, 700, 800, 900];
 }
-function weightSelect(value, onChange, id = "Outfit") {
+function weightSelect(value, onChange, id = "Outfit", disabled = false) {
   const weights = weightsFor(id);
   if (!weights.includes(+value)) weights.push(+value);
   weights.sort((a, b) => a - b);
   return html`<select
     aria-label="Font weight"
+    ?disabled=${disabled}
     .value=${String(value)}
     @change=${(e) => onChange(+e.target.value)}
   >
@@ -125,7 +126,14 @@ function empty(title, text, symbol = "Aa") {
 function openPicker(which, event) {
   picker = which;
   search = "";
-  filter = "all";
+  filter =
+    which === "monospace"
+      ? "monospace"
+      : which === "serif"
+        ? "serif"
+        : which === "sansSerif"
+          ? "sans-serif"
+          : "all";
   limit = 60;
   pickerTrigger = event?.currentTarget || document.activeElement;
   draw();
@@ -158,11 +166,18 @@ async function choose(family) {
         : ws[0] || 400;
   });
 }
+function slotLabel(slot) {
+  return slot === "sansSerif"
+    ? "sans-serif"
+    : slot === "monospace"
+      ? "code / monospace"
+      : slot;
+}
 function fontButton(which, value) {
   return html`<button
     class="font-choice"
     @click=${(e) => openPicker(which, e)}
-    aria-label=${`Choose ${which} font`}
+    aria-label=${`Choose ${slotLabel(which)} font`}
   >
     <span>${fontName(value)}</span><span aria-hidden="true">⌄</span>
   </button>`;
@@ -224,10 +239,97 @@ function specimen() {
       <strong id="sample-bold">Make a statement.</strong
       ><em id="sample-italic">And let the details speak.</em>
     </p>
-    <small>Code stays code. Your icons stay themselves.</small>${previewError
+    <small
+      >${s.monospaceEnabled
+        ? `Code uses ${fontName(s.monospace.family)}. Icons stay themselves.`
+        : "Code stays code. Your icons stay themselves."}</small
+    >${previewError
       ? html`<div class="preview-error" role="status">${previewError}</div>`
       : nothing}
   </div>`;
+}
+function categoryControls() {
+  return html`<section class="panel" style="margin-top:16px">
+      <div class="panel-head">
+        <h2>A font for every kind of text.</h2>
+        <p class="muted">
+          Give serif and sans-serif text their own character. Leave either on
+          the default to use your regular typeface.
+        </p>
+      </div>
+      <div class="two-col">
+        ${[
+          ["serif", "Serif", "Lora"],
+          ["sansSerif", "Sans-serif", "Inter"],
+        ].map(
+          ([slot, label]) =>
+            html`<div class="font-card">
+              <p class="eyebrow">${label}</p>
+              <div class="glyph" id=${`sample-${slot}`}>Aa</div>
+              ${fontButton(slot, s[slot].family)}<label class="field"
+                ><span>${label} weight</span>${weightSelect(
+                  s[slot].weight,
+                  (v) =>
+                    change((x) => {
+                      x[slot].weight = v;
+                    }),
+                  s[slot].family || s.regular.family,
+                  !s[slot].family,
+                )}</label
+              >
+            </div>`,
+        )}
+      </div>
+      <p class="note">
+        A blank category follows the default font and weight. Bold and italic
+        use that category’s family unless you have explicitly chosen a different
+        bold or italic font.
+      </p>
+    </section>
+    <section class="panel">
+      <div class="settings-row">
+        <div>
+          <h2>Code & monospace</h2>
+          <p class="muted">
+            Replace code blocks, inline code and other fixed-width text with
+            your chosen typeface.
+          </p>
+        </div>
+        ${switchControl(
+          "Replace code and monospace fonts",
+          s.monospaceEnabled,
+          (v) =>
+            change((x) => {
+              x.monospaceEnabled = v;
+            }),
+        )}
+      </div>
+      <div class="two-col">
+        <label class="field"
+          ><span>Code / monospace typeface</span>${fontButton(
+            "monospace",
+            s.monospace.family,
+          )}</label
+        ><label class="field"
+          ><span>Code / monospace weight</span>${weightSelect(
+            s.monospace.weight,
+            (v) =>
+              change((x) => {
+                x.monospace.weight = v;
+              }),
+            s.monospace.family,
+          )}</label
+        >
+      </div>
+      <pre class="code-preview" id="sample-monospace">
+const font = "${fontName(s.monospace.family)}";
+// Make code feel like home.</pre
+      >
+      <p class="muted" style="font-size:13px">
+        Replacement is off by default. Icons and exceptions stay protected, and
+        saved right-click overrides take priority.
+      </p>
+    </section>`;
 }
 function typography() {
   return html`${hero(
@@ -281,7 +383,7 @@ function typography() {
       )}
     </div>
     <div class="spacer"></div>
-    ${specimen()}
+    ${specimen()} ${categoryControls()}
     <div class="panel" style="margin-top:16px">
       <div class="two-col">
         <label class="field"
@@ -312,9 +414,9 @@ function typography() {
         >
       </div>
       <p class="note">
-        Bold and italic can each have their own typeface. “Same as regular”
-        keeps the family consistent while using its selected weight and italic
-        style. Bold italics use the italic profile.
+        Bold and italic can each have their own typeface. “Follow text category”
+        uses the serif or sans-serif family selected above, with its selected
+        style weight. Bold italics use the italic profile.
       </p>
     </div>`;
 }
@@ -404,9 +506,21 @@ async function removeCustom(font) {
   )
     return;
   await change((x) => {
-    for (const slot of ["regular", "bold", "italic"])
+    for (const slot of [
+      "regular",
+      "bold",
+      "italic",
+      "serif",
+      "sansSerif",
+      "monospace",
+    ])
       if (x[slot].family === font.id)
-        x[slot].family = slot === "regular" ? "Outfit" : "";
+        x[slot].family =
+          slot === "regular"
+            ? "Outfit"
+            : slot === "monospace"
+              ? "JetBrains Mono"
+              : "";
     x.rules = x.rules.filter((r) => r.family !== font.id);
     x.favourites = x.favourites.filter((f) => f !== font.id);
   }, "Font removed");
@@ -966,7 +1080,7 @@ function preferences() {
     <div class="panel">
       <h2>Made for your eyes. By XDan.</h2>
       <p class="muted" style="margin:12px 0">
-        Fontify 1.0.0 · MIT licensed · Built with matraic’s M3E components.
+        Fontify 1.1.0 · MIT licensed · Built with matraic’s M3E components.
       </p>
       <p class="muted">
         No analytics. No accounts. No browsing history stored. Your settings and
@@ -1007,7 +1121,7 @@ function results() {
       (filter === "all" ||
         (filter === "favourites"
           ? s.favourites.includes(f.id)
-          : f.category.toLowerCase() === filter)),
+          : f.category.toLowerCase().replaceAll(" ", "-") === filter)),
   );
   return list;
 }
@@ -1029,7 +1143,8 @@ function pickerDialog() {
       <div class="picker-head">
         <div class="row between">
           <h2 id="picker-title">
-            Choose your ${picker === "rule" ? "override" : picker} font.
+            Choose your ${picker === "rule" ? "override" : slotLabel(picker)}
+            font.
           </h2>
           <button
             class="icon-btn"
@@ -1083,11 +1198,18 @@ function pickerDialog() {
         </div>
       </div>
       <div class="font-results">
-        ${picker !== "regular" && picker !== "rule"
+        ${picker !== "regular" && picker !== "rule" && picker !== "monospace"
           ? html`<div class="font-result">
               <button class="choose" @click=${() => choose("")}>
-                <b>Same as regular</b
-                ><small>Use ${fontName(s.regular.family)}</small>
+                <b
+                  >${["bold", "italic"].includes(picker)
+                    ? "Follow text category"
+                    : "Use default typeface"}</b
+                ><small
+                  >${["bold", "italic"].includes(picker)
+                    ? "Keep serif and sans-serif families distinct"
+                    : `Use ${fontName(s.regular.family)}`}</small
+                >
               </button>
             </div>`
           : nothing}${fonts.length
@@ -1161,10 +1283,25 @@ async function previewResult(font, button) {
 async function preview() {
   if (!ready) return;
   previewError = "";
-  for (const slot of ["regular", "bold", "italic"]) {
+  for (const slot of [
+    "regular",
+    "bold",
+    "italic",
+    "serif",
+    "sansSerif",
+    "monospace",
+  ]) {
+    if (
+      !["regular", "bold", "italic"].includes(slot) &&
+      !document.getElementById(`sample-${slot}`)
+    )
+      continue;
     const family = s[slot].family || s.regular.family,
       style = slot === "italic" ? "italic" : "normal",
-      weight = s[slot].weight,
+      weight =
+        ["serif", "sansSerif"].includes(slot) && !s[slot].family
+          ? s.regular.weight
+          : s[slot].weight,
       key = fontKey(family, weight, style);
     try {
       if (!loaded.has(key)) {

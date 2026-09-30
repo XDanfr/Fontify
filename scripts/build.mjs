@@ -1,5 +1,12 @@
 import { build } from "esbuild";
 import { mkdir, rm, cp, readFile, writeFile, readdir } from "node:fs/promises";
+const catalogue = JSON.parse(await readFile("data/catalogue.json"));
+const categories = Object.fromEntries(
+  catalogue.families.map((f) => [
+    f.family.toLowerCase(),
+    f.category.toLowerCase().replaceAll(" ", "-"),
+  ]),
+);
 const { version } = JSON.parse(await readFile("package.json"));
 for (const browser of ["chrome", "firefox"]) {
   const outdir = `dist/${browser}`;
@@ -37,6 +44,7 @@ for (const browser of ["chrome", "firefox"]) {
   await build({
     entryPoints: ["src/background.js", "src/content.js", "src/ui.js"],
     bundle: true,
+    define: { GOOGLE_FONT_CATEGORIES: JSON.stringify(categories) },
     outdir,
     format: "iife",
     target: ["chrome120", "firefox140"],

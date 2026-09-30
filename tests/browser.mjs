@@ -117,12 +117,81 @@ try {
   assert.deepEqual(
     await options
       .locator('select[aria-label="Font weight"]')
-      .evaluateAll((els) => els.map((el) => el.value)),
+      .evaluateAll((els) => els.slice(0, 3).map((el) => el.value)),
     ["400", "700", "400"],
   );
   await options.waitForFunction(() =>
     document.fonts.check("19px Fontify_4f_75_74_66_69_74"),
   );
+  // Category profiles apply by original typography, independently of the default font.
+  await options
+    .getByRole("button", { name: "Choose serif font", exact: true })
+    .click();
+  await options.getByRole("searchbox", { name: "Search fonts" }).fill("Lora");
+  await options
+    .locator(".font-result .choose")
+    .filter({ has: options.locator("b", { hasText: /^Lora$/ }) })
+    .click();
+  await page.waitForFunction(() =>
+    getComputedStyle(document.querySelector("#inline")).fontFamily.includes(
+      "Fontify_4c_6f_72_61",
+    ),
+  );
+  await options
+    .getByRole("button", { name: "Choose sans-serif font", exact: true })
+    .click();
+  await options.getByRole("searchbox", { name: "Search fonts" }).fill("Roboto");
+  await options
+    .locator(".font-result .choose")
+    .filter({ has: options.locator("b", { hasText: /^Roboto$/ }) })
+    .click();
+  await page.waitForFunction(() =>
+    getComputedStyle(document.querySelector("#normal")).fontFamily.includes(
+      "Fontify_52_6f_62_6f_74_6f",
+    ),
+  );
+  await options
+    .getByRole("switch", {
+      name: "Replace code and monospace fonts",
+      exact: true,
+    })
+    .click();
+  await page.waitForFunction(() =>
+    getComputedStyle(document.querySelector("#code code")).fontFamily.includes(
+      "Fontify_4a_65_74_42_72_61_69_6e_73_20_4d_6f_6e_6f",
+    ),
+  );
+  assert(
+    (
+      await page
+        .locator("#mono")
+        .evaluate((el) => getComputedStyle(el).fontFamily)
+    ).includes("Fontify_4a_65_74_42_72_61_69_6e_73_20_4d_6f_6e_6f"),
+  );
+  assert(
+    !(
+      await page
+        .locator("#icon")
+        .evaluate((el) => getComputedStyle(el).fontFamily)
+    ).includes("Fontify_"),
+  );
+  await options
+    .getByRole("switch", {
+      name: "Replace code and monospace fonts",
+      exact: true,
+    })
+    .click();
+  await page.waitForFunction(
+    () =>
+      !getComputedStyle(
+        document.querySelector("#code code"),
+      ).fontFamily.includes("Fontify_"),
+  );
+  // Clear the category override to exercise legacy default-font behaviour below.
+  await options
+    .getByRole("button", { name: "Choose sans-serif font", exact: true })
+    .click();
+  await options.getByRole("button", { name: /Use default typeface/ }).click();
   const fallback = await options.evaluate(() =>
     chrome.runtime.sendMessage({
       type: "font",

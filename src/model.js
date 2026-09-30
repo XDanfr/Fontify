@@ -3,6 +3,10 @@ export const DEFAULTS = {
   enabled: true,
   theme: "dark",
   onlineFonts: true,
+  monospaceEnabled: false,
+  serif: { family: "", weight: 400 },
+  sansSerif: { family: "", weight: 400 },
+  monospace: { family: "JetBrains Mono", weight: 400 },
   regular: { family: "Outfit", weight: 400 },
   bold: { family: "", weight: 700 },
   italic: { family: "", weight: 400 },
@@ -19,10 +23,17 @@ export const DEFAULTS = {
 export function normalise(input = {}) {
   const s = structuredClone(DEFAULTS);
   if (!input || typeof input !== "object") return s;
-  for (const k of ["enabled", "onlineFonts"])
+  for (const k of ["enabled", "onlineFonts", "monospaceEnabled"])
     if (typeof input[k] === "boolean") s[k] = input[k];
   if (["dark", "light", "auto"].includes(input.theme)) s.theme = input.theme;
-  for (const k of ["regular", "bold", "italic"]) {
+  for (const k of [
+    "regular",
+    "bold",
+    "italic",
+    "serif",
+    "sansSerif",
+    "monospace",
+  ]) {
     if (typeof input[k]?.family === "string" && input[k].family.length <= 200)
       s[k].family = input[k].family;
     if (Number.isFinite(+input[k]?.weight))
@@ -90,20 +101,56 @@ export function isIcon(stack, text = "") {
     (/^[\s\uE000-\uF8FF]+$/.test(text) && text.trim().length > 0)
   );
 }
-export function profileFor(style, s) {
-  if (style.fontStyle === "italic" || style.fontStyle === "oblique")
+export function classifyFont(stack, categories = {}) {
+  const families = stack.split(",").map(firstFamily);
+  for (const family of families) {
+    const name = family.toLowerCase(),
+      category = categories[name];
+    if (category === "serif") return "serif";
+    if (category === "sans-serif") return "sansSerif";
+    if (category === "monospace" || isMonospace(family)) return "monospace";
+    if (
+      /^(georgia|times(?: new roman)?|cambria|garamond|palatino(?: linotype)?|baskerville|constantia|book antiqua|didot|bodoni(?: mt)?)$/.test(
+        name,
+      )
+    )
+      return "serif";
+    if (name === "serif" || name === "ui-serif") return "serif";
+    if (
+      name === "sans-serif" ||
+      name === "ui-sans-serif" ||
+      name === "system-ui"
+    )
+      return "sansSerif";
+  }
+  return "sansSerif";
+}
+export function profileFor(style, s, category = "sansSerif") {
+  const base =
+    category === "monospace"
+      ? s.monospace
+      : s[category]?.family
+        ? s[category]
+        : s.regular;
+  const italic =
+    style.fontStyle === "italic" || style.fontStyle.startsWith("oblique");
+  if (category === "monospace")
+    return { ...base, style: italic ? "italic" : "normal", category };
+  if (italic)
     return {
       ...s.italic,
-      family: s.italic.family || s.regular.family,
+      family: s.italic.family || base.family,
       style: "italic",
+      category,
     };
   if (+style.fontWeight >= 600)
     return {
       ...s.bold,
-      family: s.bold.family || s.regular.family,
+      family: s.bold.family || base.family,
       style: "normal",
+      category,
     };
-  return { ...s.regular, style: "normal" };
+  return { ...base, style: "normal", category };
 }
 export function resolveRule(s, host, family, element) {
   return [...s.rules]
