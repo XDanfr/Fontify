@@ -89,7 +89,7 @@ for (const browser of ["chrome", "firefox"]) {
   else
     manifest.browser_specific_settings = {
       gecko: {
-        id: "fontify@xdan.me",
+        id: "fontify@xdan.cc",
         strict_min_version: "140.0",
         data_collection_permissions: { required: ["none"] },
       },

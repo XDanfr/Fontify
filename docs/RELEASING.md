@@ -17,7 +17,7 @@ The key signs a CRX3; it does not grant a Chrome Web Store signature. For public
 
 1. Create Mozilla Add-ons API credentials in your AMO developer account.
 2. Add the key as `AMO_JWT_ISSUER` and the secret as `AMO_JWT_SECRET` in repository Actions secrets.
-3. The first version uses the extension ID `fontify@xdan.me` from the Firefox manifest. Keep that ID stable.
+3. The Firefox manifest uses the extension ID `fontify@xdan.cc`. The domain migration changes the add-on identity: sign and distribute it as a new add-on, since it cannot update installations using the previous ID. Keep the new ID stable for subsequent releases.
 4. On a version tag, the workflow runs `web-ext sign --channel unlisted`. A signed XPI is included in the artifact and Release.
 
 Without credentials, the workflow succeeds with an explicitly named **unsigned** XPI. A signing failure with configured credentials fails the build so an unsigned package is never mistaken for a signed one. Mozilla may require source review; provide this repository and its locked dependency/build instructions. Automated unlisted signing does not create a public AMO listing.
