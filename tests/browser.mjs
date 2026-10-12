@@ -445,7 +445,7 @@ try {
   );
   const popup = await context.newPage();
   popup.on("pageerror", (e) => errors.push(e.message));
-  await popup.setViewportSize({ width: 390, height: 660 });
+  await popup.setViewportSize({ width: 520, height: 660 });
   await popup.goto(`chrome-extension://${id}/popup.html`);
   await popup.getByRole("button", { name: "All settings ↗" }).waitFor();
   await popup.screenshot({
@@ -741,6 +741,144 @@ try {
   await failedOptions
     .getByRole("heading", { name: "Make yourself at font." })
     .waitFor();
+  await options
+    .getByRole("button", { name: "Typography", exact: true })
+    .click();
+  for (const [slot, family] of [
+    ["regular", "Bungee"],
+    ["bold", "Lora"],
+    ["italic", "Roboto"],
+  ]) {
+    await options
+      .getByRole("button", { name: `Choose ${slot} font`, exact: true })
+      .click();
+    await options.getByRole("searchbox", { name: "Search fonts" }).fill(family);
+    await options
+      .locator(".font-result .choose")
+      .filter({
+        has: options.locator("b", { hasText: new RegExp(`^${family}$`) }),
+      })
+      .click();
+  }
+  await options.waitForFunction(() => {
+    const family = (selector) =>
+      getComputedStyle(document.querySelector(selector)).fontFamily;
+    return (
+      family(".hero .muted").includes("Fontify_42_75_6e_67_65_65") &&
+      family("h1").includes("Fontify_4c_6f_72_61") &&
+      family("#sample-italic").includes("Fontify_52_6f_62_6f_74_6f") &&
+      family('input[type="range"]').includes("Fontify_42_75_6e_67_65_65")
+    );
+  });
+  await options
+    .getByRole("button", { name: "Font library", exact: true })
+    .click();
+  await options.waitForFunction(() =>
+    getComputedStyle(
+      document.querySelector("m3e-button").shadowRoot.querySelector(".label"),
+    ).fontFamily.includes("Fontify_42_75_6e_67_65_65"),
+  );
+  const symbols = await options
+    .locator(".nav-icon .symbol")
+    .evaluateAll(async (elements) =>
+      Promise.all(
+        elements.map(async (el) => {
+          const url =
+            getComputedStyle(el).maskImage.match(/url\("?([^"\)]+)/)[1];
+          const response = await fetch(url);
+          return response.ok && (await response.text()).startsWith("<svg");
+        }),
+      ),
+    );
+  assert.equal(symbols.length, 10);
+  assert(symbols.every(Boolean), "Both icon states must load locally");
+  await options
+    .getByRole("button", { name: "Choose regular font", exact: true })
+    .click();
+  await options.getByRole("searchbox", { name: "Search fonts" }).fill("Outfit");
+  await options
+    .locator(".font-result .choose")
+    .filter({ has: options.locator("b", { hasText: /^Outfit$/ }) })
+    .click();
+  await options.emulateMedia({ reducedMotion: "reduce" });
+  await options
+    .getByRole("button", { name: "Choose regular font", exact: true })
+    .click();
+  assert.equal(
+    await options
+      .locator(".picker")
+      .evaluate((el) => getComputedStyle(el).animationName),
+    "none",
+  );
+  await options.keyboard.press("Escape");
+  assert.equal(
+    await options
+      .locator(".nav-icon")
+      .first()
+      .evaluate((el) => getComputedStyle(el).transitionDuration),
+    "0s",
+  );
+  // Toolbar sizing is different from opening popup.html in an ordinary tab.
+  await worker.evaluate(() => chrome.action.openPopup());
+  const browserSession = await context.browser().newBrowserCDPSession();
+  const { targetInfos } = await browserSession.send("Target.getTargets");
+  const nativeTarget = targetInfos.find(
+    (target) =>
+      !target.attached && target.url === `chrome-extension://${id}/popup.html`,
+  );
+  assert(nativeTarget, "Native toolbar popup must open");
+  const { sessionId } = await browserSession.send("Target.attachToTarget", {
+    targetId: nativeTarget.targetId,
+    flatten: false,
+  });
+  const resultPromise = new Promise((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error("Native popup metrics timed out")),
+      10000,
+    );
+    const handler = (event) => {
+      const message = JSON.parse(event.message);
+      if (event.sessionId === sessionId && message.id === 1) {
+        clearTimeout(timer);
+        browserSession.off("Target.receivedMessageFromTarget", handler);
+        resolve(message);
+      }
+    };
+    browserSession.on("Target.receivedMessageFromTarget", handler);
+  });
+  await browserSession.send("Target.sendMessageToTarget", {
+    sessionId,
+    message: JSON.stringify({
+      id: 1,
+      method: "Runtime.evaluate",
+      params: {
+        returnByValue: true,
+        awaitPromise: true,
+        expression: `new Promise((resolve) => {
+        const check = () => {
+          const settings = [...document.querySelectorAll('m3e-button')].find(el => el.textContent.includes('All settings'));
+          if (!settings) return setTimeout(check, 50);
+          resolve({ width: innerWidth, body: document.body.getBoundingClientRect().width,
+            height: innerHeight, toolbar: document.body.classList.contains('toolbar-popup'),
+            settingsBottom: settings.getBoundingClientRect().bottom,
+            overflow: document.documentElement.scrollWidth > innerWidth });
+        }; check();
+      })`,
+      },
+    }),
+  });
+  const native = (await resultPromise).result.result.value;
+  assert.equal(native.width, 520);
+  assert.equal(native.body, 520);
+  assert(native.toolbar && !native.overflow);
+  assert(
+    native.settingsBottom <= native.height,
+    "Quick settings must remain visible in the native popup",
+  );
+  await browserSession.send("Target.closeTarget", {
+    targetId: nativeTarget.targetId,
+  });
+  await browserSession.detach();
   assert.deepEqual(errors, []);
   console.log(
     "PASS: extension behaviour; uploads and restoration; overrides, exceptions and pause; backups and reset; picker search, filters and favourites; dialog keyboard focus; system theme toggle; startup recovery; light/dark contrast, target sizes and overflow at 1240/768/390/320px.",

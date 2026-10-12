@@ -8,6 +8,10 @@ import { normalise, DEFAULTS, matchesSite, alias, fontKey } from "./model.js";
 import { customList, importFont, fontDB, loadFace } from "./fonts.js";
 const popup = document.body.dataset.page === "popup";
 document.body.classList.toggle("popup", popup);
+document.body.classList.toggle(
+  "toolbar-popup",
+  popup && api.extension.getViews({ type: "popup" }).includes(window),
+);
 const app = document.getElementById("app");
 let s = normalise(),
   catalogue = [],
@@ -37,12 +41,24 @@ const loaded = new Set();
 let pickerTrigger;
 let editTrigger;
 const nav = [
-  ["typography", "Aa", "Typography"],
-  ["library", "Ff", "Font library"],
-  ["exceptions", "⊘", "Exceptions"],
-  ["rules", "↳", "Overrides"],
-  ["preferences", "⚙", "Preferences"],
+  ["typography", "text_fields", "Typography"],
+  ["library", "collections_bookmark", "Font library"],
+  ["exceptions", "block", "Exceptions"],
+  ["rules", "tune", "Overrides"],
+  ["preferences", "settings", "Preferences"],
 ];
+function navIcon(name) {
+  return html`<span class="nav-icon" aria-hidden="true">
+    <span
+      class="symbol symbol-outline"
+      style=${`--symbol:url("symbols/${name}-0.svg")`}
+    ></span>
+    <span
+      class="symbol symbol-filled"
+      style=${`--symbol:url("symbols/${name}-1.svg")`}
+    ></span>
+  </span>`;
+}
 function tell(message) {
   toast = message;
   clearTimeout(toastTimer);
@@ -1282,10 +1298,51 @@ async function previewResult(font, button) {
   }
 }
 let previewRun = 0;
+async function applyInterfaceFonts(run) {
+  const family = s.sansSerif.family || s.regular.family;
+  const profiles = [
+    [
+      "regular",
+      family,
+      s.sansSerif.family ? s.sansSerif.weight : s.regular.weight,
+      "normal",
+    ],
+    ["bold", s.bold.family || family, s.bold.weight, "normal"],
+    ["italic", s.italic.family || family, s.italic.weight, "italic"],
+  ];
+  const results = await Promise.allSettled(
+    profiles.map(async ([, family, weight, style]) => {
+      const key = fontKey(family, weight, style);
+      if (!loaded.has(key)) {
+        await loadFace({ family, weight, style });
+        loaded.add(key);
+      }
+    }),
+  );
+  if (run !== previewRun) return "";
+  profiles.forEach(([slot, family, weight], index) => {
+    const available = results[index].status === "fulfilled";
+    document.documentElement.style.setProperty(
+      `--fontify-${slot}-family`,
+      available
+        ? `"${alias(family)}", Outfit, system-ui, sans-serif`
+        : "Outfit, system-ui, sans-serif",
+    );
+    document.documentElement.style.setProperty(
+      `--fontify-${slot}-weight`,
+      String(weight),
+    );
+  });
+  return (
+    results.find((result) => result.status === "rejected")?.reason?.message ||
+    ""
+  );
+}
 async function preview() {
   if (!ready) return;
   const run = ++previewRun;
-  let errorMessage = "";
+  let errorMessage = await applyInterfaceFonts(run);
+  if (run !== previewRun) return;
   for (const slot of [
     "regular",
     "bold",
@@ -1343,6 +1400,7 @@ function draw() {
     html`<m3e-theme
       color="#bca3ff"
       variant="tonal-spot"
+      motion="expressive"
       scheme=${s.theme}
       strong-focus
       ><div class="shell" ?inert=${!!(picker || editing)}>
@@ -1371,7 +1429,7 @@ function draw() {
                               void preview();
                             }}
                           >
-                            <span aria-hidden="true">${icon}</span>${label}
+                            ${navIcon(icon)}<span>${label}</span>
                           </button>`,
                       )}
                     </nav>
