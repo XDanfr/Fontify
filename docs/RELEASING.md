@@ -34,3 +34,32 @@ Without credentials, the workflow succeeds with an explicitly named **unsigned**
 Do not reuse a Firefox version after it has been submitted to AMO. Do not expose signing secrets to forked pull requests; the workflow does not read credentials in PR runs.
 
 Official references: [Chrome extension distribution](https://developer.chrome.com/docs/extensions/how-to/distribute/), [Firefox signing and distribution](https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/), and [web-ext command reference](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/).
+
+## Signed manual dry run
+
+Run **Build Fontify** using **Run workflow**, selecting the test branch. Manual
+branch dispatches run only `signed-dry-run`; the ordinary build and release jobs
+are skipped. No tag, GitHub Release, or public store listing is created. Mozilla
+receives an unlisted submission for the existing `fontify@xdan.cc` identity.
+All three signing secrets are required; missing credentials fail the run.
+
+Each dispatch uses `0.0.<workflow run number>.<attempt>` in both manifests and
+package filenames, leaving committed production versions untouched. This keeps
+test versions below 1.1.0 and makes every retry distinct because AMO does not
+allow a previously submitted version to be reused. Do not copy this job into
+another workflow with a fresh run-number counter without changing its version
+namespace. An AMO rejection still consumes that attempt; rerun the workflow,
+which increments the attempt, rather than uploading the same version manually.
+
+The four package artifacts are separate Chrome ZIP, stable-key signed CRX3,
+Firefox ZIP, and Mozilla-signed XPI. A fifth artifact contains SHA-256 checksums
+and verification results including Chrome identity, Firefox identity/version,
+and Firefox release's signature and active-installation verdict. The unsigned
+XPI and private key are never uploaded. Uploads occur only after all checks pass.
+Chromium runs the existing interactive extension suite. Firefox runs manifest
+lint plus a persistent signed-installation check, not the Chromium interaction
+suite. Existing known dependency lint warnings remain visible.
+
+A stable-key CRX signature is a developer signature, not Chrome Web Store
+approval. Unlisted Mozilla signing still records the test version on AMO and
+may require Mozilla review; a signing timeout is a failure, not a signed result.

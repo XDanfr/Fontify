@@ -9,6 +9,7 @@ permissions:
   contents: read
 jobs:
   build:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +63,7 @@ jobs:
           path: test-results/*.png
           if-no-files-found: ignore
   release:
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -80,3 +81,95 @@ jobs:
             packages/*.crx
             packages/*.xpi
             packages/signed/*.xpi
+
+  signed-dry-run:
+    if: github.event_name == 'workflow_dispatch' && github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Require signing credentials
+        env:
+          CHROME_PRIVATE_KEY: ${{ secrets.CHROME_PRIVATE_KEY }}
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          test -n "$CHROME_PRIVATE_KEY" && test -n "$AMO_JWT_ISSUER" && test -n "$AMO_JWT_SECRET"
+          umask 077
+          printf '%s' "$CHROME_PRIVATE_KEY" > "$RUNNER_TEMP/fontify.pem"
+          echo "CHROME_KEY_PATH=$RUNNER_TEMP/fontify.pem" >> "$GITHUB_ENV"
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Allocate a fresh test version
+        run: node scripts/signed-dry-run.mjs prepare
+      - run: npm run lint:firefox
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - name: Package with the stable Chrome key
+        run: npm run package
+      - name: Mozilla unlisted signing only
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: npx --no-install web-ext sign --source-dir dist/firefox --artifacts-dir artifacts/signed --channel unlisted --approval-timeout 900000
+      - name: Verify packages and CRX signature
+        env:
+          CHROME_PRIVATE_KEY: ${{ secrets.CHROME_PRIVATE_KEY }}
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          node scripts/signed-dry-run.mjs verify
+          python3 - <<'PY'
+          import io, pathlib, zipfile
+          for path in pathlib.Path('verified').glob('*'):
+              if path.suffix not in ('.zip', '.xpi', '.crx'):
+                  continue
+              data = path.read_bytes()
+              if path.suffix == '.crx':
+                  data = data[12 + int.from_bytes(data[8:12], 'little'):]
+              with zipfile.ZipFile(io.BytesIO(data)) as archive:
+                  assert archive.testzip() is None, path
+          PY
+      - uses: browser-actions/setup-firefox@v1
+        with:
+          firefox-version: latest
+      - run: python3 -m pip install selenium==4.36.0
+      - name: Verify Mozilla signature and persistent installation in Firefox release
+        run: python3 scripts/verify-firefox.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fontify-${{ env.TEST_VERSION }}-TEST-chrome-zip
+          path: verified/*-chrome.zip
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fontify-${{ env.TEST_VERSION }}-TEST-chrome-signed-crx
+          path: verified/*-chrome-signed.crx
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fontify-${{ env.TEST_VERSION }}-TEST-firefox-zip
+          path: verified/*-firefox.zip
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fontify-${{ env.TEST_VERSION }}-TEST-firefox-signed-xpi
+          path: verified/*-firefox-signed.xpi
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fontify-${{ env.TEST_VERSION }}-TEST-verification
+          path: |
+            verified/verification.json
+            verified/SHA256SUMS
+          if-no-files-found: error
+      - name: Remove temporary private key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/fontify.pem"
