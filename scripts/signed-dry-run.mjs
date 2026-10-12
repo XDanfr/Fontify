@@ -16,7 +16,7 @@ if (mode === "prepare") {
   // AMO consumes versions even on a failed signing attempt. Retries get a new version.
   const run = BigInt(process.env.GITHUB_RUN_NUMBER);
   const attempt = BigInt(process.env.GITHUB_RUN_ATTEMPT);
-  assert(run > 0n && run < 100000000n && attempt > 0n && attempt < 100n);
+  assert(run > 0n && run < 65536n && attempt > 0n && attempt < 100n);
   const version = `0.0.${run}.${attempt}`;
   for (const browser of ["chrome", "firefox"]) {
     const path = `dist/${browser}/manifest.json`;

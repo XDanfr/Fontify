@@ -41,14 +41,17 @@ Run **Build Fontify** using **Run workflow**, selecting the test branch. Manual
 branch dispatches run only `signed-dry-run`; the ordinary build and release jobs
 are skipped. No tag, GitHub Release, or public store listing is created. Mozilla
 receives an unlisted submission for the existing `fontify@xdan.cc` identity.
-All three signing secrets are required; missing credentials fail the run.
+All three signing secrets are required; missing credentials fail the run. The
+dry run accepts an unencrypted RSA Chrome key as PEM, base64 PEM, base64 DER,
+or PEM with escaped newlines. Normalising its encoding preserves its identity.
 
 Each dispatch uses `0.0.<workflow run number>.<attempt>` in both manifests and
 package filenames, leaving committed production versions untouched. This keeps
 test versions below 1.1.0 and makes every retry distinct because AMO does not
 allow a previously submitted version to be reused. Do not copy this job into
 another workflow with a fresh run-number counter without changing its version
-namespace. An AMO rejection still consumes that attempt; rerun the workflow,
+namespace. Run numbers above 65535 and attempts above 99 fail before signing
+to keep the version inside Chromium limits. An AMO rejection still consumes that attempt; rerun the workflow,
 which increments the attempt, rather than uploading the same version manually.
 
 The four package artifacts are separate Chrome ZIP, stable-key signed CRX3,
