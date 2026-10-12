@@ -1096,7 +1096,8 @@ function preferences() {
     <div class="panel">
       <h2>About Fontify</h2>
       <p class="muted" style="margin:12px 0">
-        Fontify 1.1.0 · MIT licensed · Built with matraic’s M3E components.
+        Fontify ${FONTIFY_VERSION} · MIT licensed · Built with matraic’s M3E
+        components.
       </p>
       <p class="muted">
         No analytics. No accounts. No browsing history stored. Your settings and

@@ -109,6 +109,7 @@ try {
     args: [
       `--disable-extensions-except=${extension}`,
       `--load-extension=${extension}`,
+      "--window-size=1240,1000",
       "--no-sandbox",
     ],
     viewport: { width: 1240, height: 1000 },
@@ -559,7 +560,8 @@ try {
         await checkTargets(options);
         await options.screenshot({
           path: `test-results/${name.toLowerCase().replaceAll(" ", "-")}-${theme}-${width}.png`,
-          fullPage: true,
+          fullPage: false,
+          animations: "disabled",
         });
       }
     }
