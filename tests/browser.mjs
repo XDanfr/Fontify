@@ -20,6 +20,10 @@ const profile = await mkdtemp(join(tmpdir(), "fontify-test-"));
 const extension = resolve("dist/chrome");
 let context;
 const errors = [];
+async function capture(page, options) {
+  await page.bringToFront();
+  await page.screenshot({ ...options, animations: "disabled" });
+}
 async function checkContrast(page) {
   await page.evaluate(
     () =>
@@ -298,7 +302,7 @@ try {
   assert.equal(italicOnly.faces[0].weight, "400");
   assert.equal(italicOnly.faces[0].style, "italic");
   await mkdir("test-results", { recursive: true });
-  await options.screenshot({
+  await capture(options, {
     path: "test-results/options-dark.png",
     fullPage: true,
   });
@@ -308,7 +312,7 @@ try {
   await options.waitForFunction(
     () => document.querySelector("m3e-theme").scheme === "light",
   );
-  await options.screenshot({
+  await capture(options, {
     path: "test-results/options-light.png",
     fullPage: true,
   });
@@ -449,7 +453,7 @@ try {
   await popup.setViewportSize({ width: 520, height: 660 });
   await popup.goto(`chrome-extension://${id}/popup.html`);
   await popup.getByRole("button", { name: "All settings ↗" }).waitFor();
-  await popup.screenshot({
+  await capture(popup, {
     path: "test-results/popup-light.png",
     fullPage: true,
   });
@@ -558,7 +562,7 @@ try {
         );
         await checkContrast(options);
         await checkTargets(options);
-        await options.screenshot({
+        await capture(options, {
           path: `test-results/${name.toLowerCase().replaceAll(" ", "-")}-${theme}-${width}.png`,
           fullPage: false,
           animations: "disabled",
@@ -687,7 +691,7 @@ try {
     );
     await checkContrast(popup);
     await checkTargets(popup);
-    await popup.screenshot({
+    await capture(popup, {
       path: `test-results/popup-${theme}-320.png`,
       fullPage: true,
     });
