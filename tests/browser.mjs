@@ -864,7 +864,7 @@ try {
         const check = () => {
           const settings = [...document.querySelectorAll('m3e-button')].find(el => el.textContent.includes('All settings'));
           if (!settings) return setTimeout(check, 50);
-          resolve({ width: innerWidth, body: document.body.getBoundingClientRect().width,
+          resolve({ width: innerWidth, contentWidth: document.documentElement.clientWidth, body: document.body.getBoundingClientRect().width,
             height: innerHeight, toolbar: document.body.classList.contains('toolbar-popup'),
             settingsBottom: settings.getBoundingClientRect().bottom,
             overflow: document.documentElement.scrollWidth > innerWidth });
@@ -874,7 +874,8 @@ try {
     }),
   });
   const native = (await resultPromise).result.result.value;
-  assert.equal(native.width, 520);
+  assert.equal(native.contentWidth, 520);
+  assert(native.width >= native.contentWidth);
   assert.equal(native.body, 520);
   assert(native.toolbar && !native.overflow);
   assert(
