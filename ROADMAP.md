@@ -2,7 +2,50 @@
 
 > Your web, your type. The long-term aim is for replacement typography to feel native: stable while content changes, respectful of the site's semantics, and reversible without side effects.
 >
-> **Status:** Planning, not yet implemented. **Proposed milestone:** v1.2.0 — Font Engine Modernisation. **Updated:** 12 October 2026. This is a documentation and architecture roadmap, not an announcement of delivered fixes.
+> **Status:** Release sequence agreed: v1.1.1 UI simplification → v1.1.2 blue brand refresh → v1.2.0 font engine modernisation. **Updated:** 12 October 2026. Items below are release intentions, not evidence that a version has shipped.
+
+## Release sequence
+
+The minor patch releases should ship **before** the larger engine work, with clear boundaries between them. Keep their changes independent so visual refinements do not complicate performance diagnosis or regression testing.
+
+### v1.1.1 — UI simplification and anti-bloat cleanup
+
+**Implementation status:** Done on [`cleanup/antislop`](https://github.com/XDanfr/Fontify/tree/cleanup/antislop), as reported by the project owner; **merge/tag/release status is not implied**. The branch is deliberately separate from the engine work.
+
+**Intent:** Make Fontify easier to understand and operate while retaining its Material 3 Expressive personality.
+
+- [x] Complete the UI cleanup work on the dedicated `cleanup/antislop` branch.
+- [ ] Before shipping, review the branch diff, check that core controls remain discoverable and keyboard-accessible, and verify light/dark themes, popup/options, narrow windows, settings interactions, and backup-related entry points.
+- [ ] Merge and tag v1.1.1 when the cleanup branch is accepted and the build/test/release workflow passes.
+
+**Scope boundary:** No major engine rewrite, typography rule semantics changes, or brand-colour overhaul in v1.1.1. Removing clutter must not remove genuinely useful functions.
+
+### v1.1.2 — Blue brand identity
+
+**Status:** Planned, after v1.1.1. **Direction:** Shift Fontify's brand from purple to **blue** so it has a recognisable identity among the wider family of apps. The precise palette, contrast targets, and icon treatment will be selected during implementation, not guessed in this roadmap.
+
+- [ ] Establish a coherent blue Material 3 Expressive source palette and verify generated primary/secondary/tertiary/on-colour/container roles in both light and dark schemes.
+- [ ] Apply the new identity consistently to popup, settings, dialogs, interactive states, onboarding/empty states where present, icons and other bundled branding surfaces; preserve purposeful semantic error/success colours.
+- [ ] Audit hover/focus/selected/disabled states, WCAG-appropriate readability and contrast, Windows/macOS/Linux browser rendering where relevant, and reduced-motion compatibility.
+- [ ] Update bundled icons and brand assets only if needed for consistency, plus screenshots/docs and release notes when they become stale.
+- [ ] Confirm that typography presets, settings, user-imported themes/data, extension IDs and functionality are unchanged; keep this a **visual branding release**, not an engine release.
+- [ ] Complete release checks and tag v1.1.2 only after v1.1.1 is integrated.
+
+**Scope boundary:** Avoid unrelated layout churn, new complexity or a rushed switch to a fixed blue for every state. Work with Material 3 Expressive's tonal colour roles and theme behaviour.
+
+### v1.2.0 — Font engine modernisation
+
+**Status:** Research and detailed plan below; implementation not started by this roadmap change. Follow Phases 0–7 after v1.1.2. This is a substantial **content-script engine** modernisation, not a full UI or product rewrite.
+
+- [ ] Establish performance/paint/correctness baselines, including YouTube automatic captions and right-click flashes.
+- [ ] Confirm the rewrite decision and hybrid CSS/JS strategy using measurement and regression fixtures.
+- [ ] Implement a stable, incremental typography engine, non-disruptive context inspection, better font loading, and bounded mutation work.
+- [ ] Preserve all existing settings, custom fonts, exception precedence and reversible disable behaviour.
+- [ ] Pass compatibility, Chromium/Firefox, performance and packaging/release gates before tagging v1.2.0.
+
+**Release dependency:** v1.2.0 starts from the accepted 1.1.2 baseline. Engine work remains independently reviewable and should not silently redo the 1.1.x visual changes.
+
+---
 
 ## Direction and decision
 
