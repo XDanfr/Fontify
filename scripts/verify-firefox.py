@@ -1,16 +1,22 @@
 import json
+import sys
 from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 
-report_path = Path('verified/verification.json')
-report = json.loads(report_path.read_text())
-xpi = next(Path('verified').glob('*-firefox-signed.xpi')).resolve()
 options = Options()
 options.add_argument('-headless')
-options.add_argument('-remote-allow-system-access')
 options.set_preference('xpinstall.signatures.required', True)
-with webdriver.Firefox(options=options) as driver:
+with webdriver.Firefox(options=options, service=Service(service_args=['--allow-system-access'])) as driver:
+    driver.set_context('chrome')
+    assert driver.execute_script('return typeof ChromeUtils.importESModule === "function"')
+    if '--probe' in sys.argv:
+        print('Firefox release verification APIs ready:', driver.capabilities['browserVersion'])
+        sys.exit(0)
+    report_path = Path('verified/verification.json')
+    report = json.loads(report_path.read_text())
+    xpi = next(Path('verified').glob('*-firefox-signed.xpi')).resolve()
     addon_id = driver.install_addon(str(xpi), temporary=False)
     assert addon_id == report['firefoxId'], addon_id
     driver.set_context('chrome')

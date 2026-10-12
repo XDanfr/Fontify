@@ -112,6 +112,12 @@ jobs:
       - run: npm run test:browser
       - name: Package with the stable Chrome key
         run: npm run package
+      - uses: browser-actions/setup-firefox@v1
+        with:
+          firefox-version: latest
+      - run: python3 -m pip install selenium==4.36.0
+      - name: Check Firefox verification APIs before signing
+        run: python3 scripts/verify-firefox.py --probe
       - name: Mozilla unlisted signing only
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
@@ -137,10 +143,6 @@ jobs:
                   assert len(names) == len(set(names)), f"Duplicate entries: {path}"
                   assert archive.testzip() is None, path
           PY
-      - uses: browser-actions/setup-firefox@v1
-        with:
-          firefox-version: latest
-      - run: python3 -m pip install selenium==4.36.0
       - name: Verify Mozilla signature and persistent installation in Firefox release
         run: python3 scripts/verify-firefox.py
       - uses: actions/upload-artifact@v4
