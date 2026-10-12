@@ -462,7 +462,7 @@ function popupView() {
         <span>Regular typeface</span>${fontButton("regular", s.regular.family)}
       </div>
     </div>
-    ${specimen()}${activeSite
+    ${activeSite
       ? html`<div class="row between">
           <div>
             <span class="eyebrow">THIS WEBSITE</span>
@@ -490,7 +490,8 @@ function popupView() {
         () => api.runtime.openOptionsPage(),
         "filled",
       )}
-    </div>`;
+    </div>
+    ${specimen()}`;
 }
 async function upload(event) {
   const files = [...event.target.files];

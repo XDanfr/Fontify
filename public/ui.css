@@ -622,6 +622,9 @@ textarea {
 .popup .settings-row {
   padding: 12px 0;
 }
+.popup .settings-row > div {
+  flex-basis: 120px;
+}
 .footer-credit {
   font-size: 11px;
   letter-spacing: 0.6px;
