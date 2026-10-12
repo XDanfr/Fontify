@@ -8,7 +8,7 @@ report = json.loads(report_path.read_text())
 xpi = next(Path('verified').glob('*-firefox-signed.xpi')).resolve()
 options = Options()
 options.add_argument('-headless')
-options.add_argument('--allow-system-access')
+options.add_argument('-remote-allow-system-access')
 options.set_preference('xpinstall.signatures.required', True)
 with webdriver.Firefox(options=options) as driver:
     addon_id = driver.install_addon(str(xpi), temporary=False)
