@@ -101,9 +101,7 @@ jobs:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         run: |
           test -n "$CHROME_PRIVATE_KEY" && test -n "$AMO_JWT_ISSUER" && test -n "$AMO_JWT_SECRET"
-          umask 077
-          printf '%s' "$CHROME_PRIVATE_KEY" > "$RUNNER_TEMP/fontify.pem"
-          echo "CHROME_KEY_PATH=$RUNNER_TEMP/fontify.pem" >> "$GITHUB_ENV"
+          node scripts/configure-signing-key.mjs
       - run: npm ci
       - run: npm test
       - run: npm run build
@@ -135,6 +133,8 @@ jobs:
               if path.suffix == '.crx':
                   data = data[12 + int.from_bytes(data[8:12], 'little'):]
               with zipfile.ZipFile(io.BytesIO(data)) as archive:
+                  names = archive.namelist()
+                  assert len(names) == len(set(names)), f"Duplicate entries: {path}"
                   assert archive.testzip() is None, path
           PY
       - uses: browser-actions/setup-firefox@v1
