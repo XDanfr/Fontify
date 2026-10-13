@@ -33,7 +33,7 @@ Download the latest **fontify-packages** artifact from [Actions](https://github.
 
 ### Chrome / Chromium
 
-1. Extract `fontify-1.1.0-chrome.zip`.
+1. Extract `fontify-1.1.1-chrome.zip`.
 2. Open `chrome://extensions` and enable **Developer mode**.
 3. Choose **Load unpacked** and select the folder containing `manifest.json`.
 4. Refresh any already-open websites once after installation. Later settings changes apply live.
@@ -42,7 +42,7 @@ A CRX3 package is also built. A self-signed CRX is useful for compatible develop
 
 ### Firefox
 
-1. Extract `fontify-1.1.0-firefox.zip`.
+1. Extract `fontify-1.1.1-firefox.zip`.
 2. Open `about:debugging#/runtime/this-firefox`.
 3. Choose **Load Temporary Add-on** and select `manifest.json`.
 4. Refresh already-open websites once after installation.
@@ -69,10 +69,11 @@ Output:
 | -------------------------------------- | ------------------------------------------------------ |
 | `dist/chrome/`                         | Unpacked Chromium MV3 build; service worker background |
 | `dist/firefox/`                        | Firefox MV3 build; event-page background               |
-| `artifacts/fontify-1.1.0-chrome.zip`   | Chrome development/store upload package                |
-| `artifacts/fontify-1.1.0-firefox.zip`  | Firefox source package                                 |
-| `artifacts/fontify-1.1.0.crx`          | Self-signed CRX3                                       |
-| `artifacts/fontify-1.1.0-unsigned.xpi` | Unsigned Firefox development package                   |
+| `artifacts/fontify-1.1.1-chrome.zip`   | Chrome development/store upload package                |
+| `artifacts/fontify-1.1.1-firefox.zip`  | Firefox extension package                              |
+| `artifacts/fontify-1.1.1.crx`          | Self-signed CRX3                                       |
+| `artifacts/fontify-1.1.1-unsigned.xpi` | Unsigned Firefox development package                   |
+| `artifacts/fontify-1.1.1-source.zip`   | Human-readable source for release review               |
 
 `npm run catalogue:update` refreshes the Google Fonts metadata snapshot. Catalogue access is never needed during an ordinary build. Fonts themselves download on demand through the background extension context and are cached in IndexedDB. All executable code and UI assets are bundled locally.
 
@@ -82,7 +83,7 @@ Mozilla's linter currently reports one `UNSAFE_VAR_ASSIGNMENT` warning in the bu
 
 ## Automated builds and signing
 
-Every push to `main` and every pull request builds, tests, validates, packages, and uploads artifacts. Tags matching `v*` also create GitHub Releases.
+Every push to `main` and every pull request builds, tests, validates, packages, and uploads artifacts. Tags matching `v*` also sign an unlisted Firefox XPI when credentials are configured and publish GitHub release assets. Unlisted signing does not publish a Mozilla Add-ons store listing. See the [1.1.1 release notes](docs/releases/v1.1.1.md).
 
 Optional repository **Actions secrets**:
 

@@ -17,6 +17,12 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
+      - name: Validate release tag and notes
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node --input-type=module -e 'import { readFileSync, accessSync } from "node:fs"; const { version } = JSON.parse(readFileSync("package.json")); if (process.env.RELEASE_TAG !== `v${version}`) throw new Error("Tag does not match package version"); accessSync(`docs/releases/${process.env.RELEASE_TAG}.md`);'
       - run: npm test
       - run: npm run build
       - run: npm run lint:firefox
@@ -34,6 +40,11 @@ jobs:
             echo "CHROME_KEY_PATH=$RUNNER_TEMP/fontify.pem" >> "$GITHUB_ENV"
           fi
       - run: npm run package
+      - name: Package human-readable review source
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          git archive --format=zip --output="artifacts/fontify-$VERSION-source.zip" HEAD src public scripts data tests docs package.json package-lock.json README.md LICENSE THIRD_PARTY_NOTICES.md
       - name: Sign Firefox XPI for unlisted distribution
         if: startsWith(github.ref, 'refs/tags/v')
         env:
@@ -42,7 +53,8 @@ jobs:
         shell: bash
         run: |
           if [ -n "$AMO_JWT_ISSUER" ] && [ -n "$AMO_JWT_SECRET" ]; then
-            npx web-ext sign --source-dir dist/firefox --artifacts-dir artifacts/signed --channel unlisted --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+            VERSION=$(node -p "require('./package.json').version")
+            npx web-ext sign --source-dir dist/firefox --artifacts-dir artifacts/signed --channel unlisted --upload-source-code "artifacts/fontify-$VERSION-source.zip" --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
           else
             echo 'AMO credentials are not configured. The unsigned XPI is available for development.'
           fi
@@ -68,6 +80,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: fontify-packages
@@ -75,6 +88,7 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          body_path: docs/releases/${{ github.ref_name }}.md
           files: |
             packages/*.zip
             packages/*.crx

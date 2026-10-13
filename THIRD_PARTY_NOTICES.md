@@ -5,3 +5,5 @@ Fontify is MIT licensed. It uses @m3e/web (MIT, copyright 2025–2026 matraic), 
 The Google Fonts catalogue contains family names and metadata retrieved from Google's public metadata endpoint. Individual font files retain their own licences; selected Google fonts are downloaded at runtime, not redistributed in this repository. Outfit is bundled for the interface under SIL Open Font License 1.1; see public/fonts/OFL.txt.
 
 Custom fonts are supplied by the user and stored only on their device. Users should have permission to use their uploaded fonts.
+
+Sidebar symbols are Google's Material Symbols Rounded, weight 700, in outlined and filled variants, from https://github.com/google/material-design-icons. They are bundled under Apache License 2.0; see public/symbols/LICENSE.

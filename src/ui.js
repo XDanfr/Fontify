@@ -8,6 +8,10 @@ import { normalise, DEFAULTS, matchesSite, alias, fontKey } from "./model.js";
 import { customList, importFont, fontDB, loadFace } from "./fonts.js";
 const popup = document.body.dataset.page === "popup";
 document.body.classList.toggle("popup", popup);
+document.body.classList.toggle(
+  "toolbar-popup",
+  popup && api.extension.getViews({ type: "popup" }).includes(window),
+);
 const app = document.getElementById("app");
 let s = normalise(),
   catalogue = [],
@@ -28,19 +32,33 @@ let s = normalise(),
   ruleScope = "site",
   ruleKind = "font",
   previewSize = 19,
-  previewText = "The web looks better your way.",
+  previewText = "Your web, your type.",
   previewError = "",
+  initError = "",
   ready = false;
 let queue = Promise.resolve();
 const loaded = new Set();
 let pickerTrigger;
+let editTrigger;
 const nav = [
-  ["typography", "Aa", "Typography"],
-  ["library", "◈", "Font library"],
-  ["exceptions", "⊘", "Exceptions"],
-  ["rules", "↳", "Overrides"],
-  ["preferences", "⚙", "Preferences"],
+  ["typography", "text_fields", "Typography"],
+  ["library", "collections_bookmark", "Font library"],
+  ["exceptions", "block", "Exceptions"],
+  ["rules", "tune", "Overrides"],
+  ["preferences", "settings", "Preferences"],
 ];
+function navIcon(name) {
+  return html`<span class="nav-icon" aria-hidden="true">
+    <span
+      class="symbol symbol-outline"
+      style=${`--symbol:url("symbols/${name}-0.svg")`}
+    ></span>
+    <span
+      class="symbol symbol-filled"
+      style=${`--symbol:url("symbols/${name}-1.svg")`}
+    ></span>
+  </span>`;
+}
 function tell(message) {
   toast = message;
   clearTimeout(toastTimer);
@@ -50,7 +68,7 @@ function tell(message) {
     draw();
   }, 4200);
 }
-function change(mutator, message = "Saved — applied to your open pages") {
+function change(mutator, message = "Saved. Applied to your open pages.") {
   queue = queue
     .then(async () => {
       const latest = await getSettings();
@@ -142,7 +160,20 @@ function openPicker(which, event) {
 function closePicker() {
   picker = null;
   draw();
-  pickerTrigger?.focus();
+  if (editing) focusDialog();
+  else pickerTrigger?.focus();
+}
+function focusDialog() {
+  requestAnimationFrame(() =>
+    document
+      .querySelector('[role="dialog"] button, [role="dialog"] input')
+      ?.focus(),
+  );
+}
+function closeEditor() {
+  editing = null;
+  draw();
+  editTrigger?.focus();
 }
 async function choose(family) {
   if (picker === "rule") {
@@ -183,6 +214,9 @@ function fontButton(which, value) {
   </button>`;
 }
 function header() {
+  const light =
+    s.theme === "light" ||
+    (s.theme === "auto" && matchMedia("(prefers-color-scheme: light)").matches);
   return html`<header class="topbar">
     <a
       class="brand"
@@ -202,47 +236,39 @@ function header() {
     >
     <div class="top-actions">
       ${!popup
-        ? html`<span class="badge">BY XDAN</span>`
+        ? html`<span class="footer-credit">By XDan</span>`
         : nothing}<m3e-icon-button
-        aria-label=${s.theme === "light"
-          ? "Switch to dark theme"
-          : "Switch to light theme"}
+        aria-label=${light ? "Switch to dark theme" : "Switch to light theme"}
         @click=${() =>
           change((v) => {
-            v.theme = s.theme === "light" ? "dark" : "light";
+            v.theme = light ? "dark" : "light";
           }, "Theme updated")}
-        ><span aria-hidden="true"
-          >${s.theme === "light" ? "☾" : "☀"}</span
-        ></m3e-icon-button
+        ><span aria-hidden="true">${light ? "☾" : "☀"}</span></m3e-icon-button
       >
     </div>
   </header>`;
 }
-function hero(title, description, mark = "Aa") {
+function hero(title, description) {
   return html`<div class="hero">
     <div>
-      <p class="eyebrow">YOUR WEB, YOUR TYPE</p>
       <h1>${title}</h1>
       <p class="muted">${description}</p>
     </div>
-    ${!popup
-      ? html`<div class="hero-mark" aria-hidden="true">${mark}</div>`
-      : nothing}
   </div>`;
 }
 function specimen() {
   return html`<div class="preview">
-    <p class="eyebrow">A LITTLE PREVIEW</p>
+    <p class="eyebrow">Font preview</p>
     <h2 id="sample-heading">${previewText}</h2>
     <p id="sample-regular" style=${`font-size:${previewSize}px`}>
-      A fresh perspective, one letter at a time.
-      <strong id="sample-bold">Make a statement.</strong
-      ><em id="sample-italic">And let the details speak.</em>
+      The quick brown fox jumps over the lazy dog. 0123456789
+      <strong id="sample-bold">Bold text for emphasis.</strong
+      ><em id="sample-italic">Italic text for a different voice.</em>
     </p>
     <small
       >${s.monospaceEnabled
         ? `Code uses ${fontName(s.monospace.family)}. Icons stay themselves.`
-        : "Code stays code. Your icons stay themselves."}</small
+        : "Code and icon fonts keep their original typeface."}</small
     >${previewError
       ? html`<div class="preview-error" role="status">${previewError}</div>`
       : nothing}
@@ -251,10 +277,10 @@ function specimen() {
 function categoryControls() {
   return html`<section class="panel" style="margin-top:16px">
       <div class="panel-head">
-        <h2>A font for every kind of text.</h2>
+        <h2>Serif & sans-serif</h2>
         <p class="muted">
-          Give serif and sans-serif text their own character. Leave either on
-          the default to use your regular typeface.
+          Choose by the page’s original text category, or use your regular
+          typeface.
         </p>
       </div>
       <div class="two-col">
@@ -323,7 +349,7 @@ function categoryControls() {
       </div>
       <pre class="code-preview" id="sample-monospace">
 const font = "${fontName(s.monospace.family)}";
-// Make code feel like home.</pre
+console.log(font);</pre
       >
       <p class="muted" style="font-size:13px">
         Replacement is off by default. Icons and exceptions stay protected, and
@@ -334,15 +360,13 @@ const font = "${fontName(s.monospace.family)}";
 function typography() {
   return html`${hero(
       "Make yourself at font.",
-      "Give the whole web a typeface that feels like you. Keep the structure. Change the character.",
+      "Choose the fonts you read on the web. Changes apply to open pages automatically.",
     )}
     <div class="panel">
       <div class="settings-row">
         <div>
-          <h3>Fontify the web</h3>
-          <p class="muted">
-            Apply your fonts on every site, except your exceptions.
-          </p>
+          <h3>Apply your fonts</h3>
+          <p class="muted">Pause to restore each page’s original typography.</p>
         </div>
         ${switchControl("Enable Fontify", s.enabled, (v) =>
           change((x) => {
@@ -355,11 +379,10 @@ function typography() {
       ${["regular", "bold", "italic"].map(
         (slot, i) =>
           html`<div class="font-card">
-            <p class="eyebrow">
-              ${["The everyday", "The emphasis", "The expression"][i]}
-            </p>
+            <p class="eyebrow">${["Regular", "Bold", "Italic"][i]}</p>
             <div
               class="glyph"
+              id=${`glyph-${slot}`}
               style=${slot === "italic"
                 ? "font-style:italic"
                 : slot === "bold"
@@ -383,8 +406,8 @@ function typography() {
       )}
     </div>
     <div class="spacer"></div>
-    ${specimen()} ${categoryControls()}
-    <div class="panel" style="margin-top:16px">
+    ${specimen()}
+    <div class="panel preview-controls">
       <div class="two-col">
         <label class="field"
           ><span>Your preview text</span
@@ -401,6 +424,7 @@ function typography() {
           <div class="range-row">
             <input
               type="range"
+              aria-label="Preview size"
               min="14"
               max="32"
               .value=${String(previewSize)}
@@ -409,7 +433,7 @@ function typography() {
                 draw();
                 void preview();
               }}
-            /><output>${previewSize}</output>
+            /><output>${previewSize}px</output>
           </div></label
         >
       </div>
@@ -418,14 +442,15 @@ function typography() {
         uses the serif or sans-serif family selected above, with its selected
         style weight. Bold italics use the italic profile.
       </p>
-    </div>`;
+    </div>
+    ${categoryControls()}`;
 }
 function popupView() {
   const excluded =
     activeSite && s.exceptions.sites.some((p) => matchesSite(activeSite, p));
   return html`${hero(
-      "Your web.\nYour type.",
-      "A small change. A whole new feeling.",
+      "Your fonts, on this page.",
+      "Choose a typeface or pause Fontify below.",
     )}
     <div class="panel">
       <div class="settings-row">
@@ -435,7 +460,7 @@ function popupView() {
             ${status?.count
               ? `${status.count} text elements restyled`
               : status?.failures
-                ? "A font could not load — see settings"
+                ? "A font could not load. Check settings."
                 : activeSite
                   ? excluded
                     ? "This site is an exception"
@@ -453,7 +478,7 @@ function popupView() {
         <span>Regular typeface</span>${fontButton("regular", s.regular.family)}
       </div>
     </div>
-    ${specimen()}${activeSite
+    ${activeSite
       ? html`<div class="row between">
           <div>
             <span class="eyebrow">THIS WEBSITE</span>
@@ -476,12 +501,13 @@ function popupView() {
           Browser settings, stores and other protected pages cannot be restyled.
         </p>`}
     <div class="footer">
-      <span class="footer-credit">MADE BY XDAN</span>${btn(
+      <span class="footer-credit">By XDan</span>${btn(
         "All settings ↗",
         () => api.runtime.openOptionsPage(),
         "filled",
       )}
-    </div>`;
+    </div>
+    ${specimen()}`;
 }
 async function upload(event) {
   const files = [...event.target.files];
@@ -531,19 +557,18 @@ async function removeCustom(font) {
 }
 function library() {
   return html`${hero(
-      "Find your type.",
-      "An entire world of letterforms. All Google Fonts, and the ones you bring along.",
-      "Fg",
+      "Font library",
+      "Browse Google Fonts or add font files from your device.",
     )}
     <div class="panel">
       <div class="row between">
         <div>
-          <h2>${catalogue.length.toLocaleString()} families. One you.</h2>
+          <h2>${catalogue.length.toLocaleString()} Google Fonts families</h2>
           <p class="muted" style="margin-top:8px">
-            Search by name, explore a category, or keep your favourites close.
+            Search by name, filter by category, and save favourites.
           </p>
         </div>
-        ${btn("Explore fonts", (e) => openPicker("regular", e), "filled")}
+        ${btn("Choose regular font", (e) => openPicker("regular", e), "filled")}
       </div>
       <p class="note">
         Choosing a font here sets your regular typeface. Google fonts download
@@ -554,7 +579,7 @@ function library() {
     <div class="panel">
       <h2>Your own collection</h2>
       <div class="upload">
-        <h3>Drop in a little personality.</h3>
+        <h3>Add font files</h3>
         <p class="muted">
           TTF or OTF · Up to 15 MB per file · Multiple files welcome
         </p>
@@ -593,9 +618,9 @@ function library() {
                 </div>`,
             )
           : empty(
-              "A collection waiting to happen.",
+              "No uploaded fonts yet",
               "Add a font file to make it available everywhere in Fontify.",
-              "◈",
+              "Aa",
             )}
       </div>
     </div>`;
@@ -626,9 +651,8 @@ async function addException() {
 }
 function exceptions() {
   return html`${hero(
-      "Some things stay.",
+      "Exceptions",
       "Leave favourite sites, specific fonts, and selected page elements exactly as they are.",
-      "Ø",
     )}
     <div class="panel">
       <h2>Add an exception</h2>
@@ -717,7 +741,7 @@ async function saveRule() {
       weight: ruleWeight,
       label: request.text,
     });
-  }, "Override saved — return to your page to see it");
+  }, "Override saved. Return to your page to see it.");
   await api.storage.local.remove(`request:${requestId}`);
   request = null;
   history.replaceState(null, "", "options.html");
@@ -727,7 +751,7 @@ async function saveRule() {
 function composer() {
   return request
     ? html`<section class="panel override-panel">
-        <p class="eyebrow">MAKE IT YOURS</p>
+        <p class="eyebrow">Selected text</p>
         <h2>Override ${request.family}</h2>
         <p class="muted">Selected on ${request.site}</p>
         <blockquote>${request.text}</blockquote>
@@ -802,9 +826,8 @@ function composer() {
 }
 function rules() {
   return html`${hero(
-      "A few personal touches.",
+      "Overrides",
       "Fine-tune a font family or a single block. Your latest matching override takes priority.",
-      "↳",
     )}${composer()}
     <div class="panel">
       <h2>Saved overrides</h2>
@@ -845,7 +868,7 @@ function rules() {
                 </div>`,
             )
           : empty(
-              "The details are yours to decide.",
+              "No saved overrides yet",
               "Select some text, right-click, and choose whether to replace its font family or just that text or code block.",
               "↳",
             )}
@@ -854,10 +877,12 @@ function rules() {
 }
 let editing = null;
 function editingRule(rule) {
+  editTrigger = document.activeElement;
   editing = rule;
   ruleFamily = rule.family;
   ruleWeight = rule.weight;
   draw();
+  focusDialog();
 }
 function editDialog() {
   return editing
@@ -898,18 +923,10 @@ function editDialog() {
                       rule.weight = ruleWeight;
                     }
                   }, "Override updated");
-                  editing = null;
-                  draw();
+                  closeEditor();
                 },
                 "filled",
-              )}${btn(
-                "Cancel",
-                () => {
-                  editing = null;
-                  draw();
-                },
-                "text",
-              )}
+              )}${btn("Cancel", closeEditor, "text")}
             </div>
           </div>
         </section>
@@ -987,9 +1004,8 @@ async function clearCache() {
 }
 function preferences() {
   return html`${hero(
-      "Just how you like it.",
-      "A quieter web, a brighter interface, or a fresh start. You’re in control.",
-      "✳",
+      "Preferences",
+      "Set the theme, manage font downloads, and back up your settings.",
     )}
     <div class="panel">
       <h2>Appearance & downloads</h2>
@@ -1039,7 +1055,7 @@ function preferences() {
       </div>
     </div>
     <div class="panel">
-      <h2>Your settings, to go.</h2>
+      <h2>Backup & reset</h2>
       <p class="muted" style="margin:10px 0 20px">
         Back up your settings, overrides, exceptions and custom font files.
         Downloads from Google are excluded.
@@ -1078,9 +1094,10 @@ function preferences() {
       </div>
     </div>
     <div class="panel">
-      <h2>Made for your eyes. By XDan.</h2>
+      <h2>About Fontify</h2>
       <p class="muted" style="margin:12px 0">
-        Fontify 1.1.0 · MIT licensed · Built with matraic’s M3E components.
+        Fontify ${FONTIFY_VERSION} · MIT licensed · Built with matraic’s M3E
+        components.
       </p>
       <p class="muted">
         No analytics. No accounts. No browsing history stored. Your settings and
@@ -1155,7 +1172,8 @@ function pickerDialog() {
           </button>
         </div>
         <p class="muted" style="font-size:13px">
-          ${catalogue.length.toLocaleString()} Google families. Yours included.
+          ${catalogue.length.toLocaleString()} Google Fonts families, plus your
+          uploaded fonts.
         </p>
         <label class="field"
           ><span class="hidden">Search fonts</span
@@ -1163,7 +1181,7 @@ function pickerDialog() {
             id="font-search"
             type="search"
             aria-label="Search fonts"
-            placeholder="Search for your kind of type…"
+            placeholder="Search font names"
             .value=${search}
             @input=${(e) => {
               search = e.target.value;
@@ -1280,9 +1298,52 @@ async function previewResult(font, button) {
     /* A failed preview never prevents selecting a font. */
   }
 }
+let previewRun = 0;
+async function applyInterfaceFonts(run) {
+  const family = s.sansSerif.family || s.regular.family;
+  const profiles = [
+    [
+      "regular",
+      family,
+      s.sansSerif.family ? s.sansSerif.weight : s.regular.weight,
+      "normal",
+    ],
+    ["bold", s.bold.family || family, s.bold.weight, "normal"],
+    ["italic", s.italic.family || family, s.italic.weight, "italic"],
+  ];
+  const results = await Promise.allSettled(
+    profiles.map(async ([, family, weight, style]) => {
+      const key = fontKey(family, weight, style);
+      if (!loaded.has(key)) {
+        await loadFace({ family, weight, style });
+        loaded.add(key);
+      }
+    }),
+  );
+  if (run !== previewRun) return "";
+  profiles.forEach(([slot, family, weight], index) => {
+    const available = results[index].status === "fulfilled";
+    document.documentElement.style.setProperty(
+      `--fontify-${slot}-family`,
+      available
+        ? `"${alias(family)}", Outfit, system-ui, sans-serif`
+        : "Outfit, system-ui, sans-serif",
+    );
+    document.documentElement.style.setProperty(
+      `--fontify-${slot}-weight`,
+      String(weight),
+    );
+  });
+  return (
+    results.find((result) => result.status === "rejected")?.reason?.message ||
+    ""
+  );
+}
 async function preview() {
   if (!ready) return;
-  previewError = "";
+  const run = ++previewRun;
+  let errorMessage = await applyInterfaceFonts(run);
+  if (run !== previewRun) return;
   for (const slot of [
     "regular",
     "bold",
@@ -1308,8 +1369,12 @@ async function preview() {
         await loadFace({ family, weight, style });
         loaded.add(key);
       }
-      const target = document.getElementById(`sample-${slot}`);
-      if (target) {
+      if (run !== previewRun) return;
+      for (const target of [
+        document.getElementById(`sample-${slot}`),
+        document.getElementById(`glyph-${slot}`),
+      ]) {
+        if (!target) continue;
         target.style.fontFamily = `"${alias(family)}", sans-serif`;
         target.style.fontWeight = String(weight);
         target.style.fontStyle = style;
@@ -1322,11 +1387,13 @@ async function preview() {
         }
       }
     } catch (error) {
-      previewError = error.message;
-      const el = document.querySelector(".preview-error");
-      if (el) el.textContent = previewError;
-      else draw();
+      if (run !== previewRun) return;
+      errorMessage = error.message;
     }
+  }
+  if (previewError !== errorMessage) {
+    previewError = errorMessage;
+    draw();
   }
 }
 function draw() {
@@ -1334,43 +1401,52 @@ function draw() {
     html`<m3e-theme
       color="#bca3ff"
       variant="tonal-spot"
+      motion="expressive"
       scheme=${s.theme}
       strong-focus
-      ><div class="shell">
-        ${header()}${!ready
-          ? html`<p class="muted">Getting your type together…</p>`
-          : popup
-            ? popupView()
-            : html`<div class="layout">
-                <aside>
-                  <nav class="nav" aria-label="Settings">
-                    ${nav.map(
-                      ([id, icon, label]) =>
-                        html`<button
-                          aria-current=${section === id ? "page" : "false"}
-                          @click=${() => {
-                            section = id;
-                            draw();
-                            void preview();
-                          }}
-                        >
-                          <span aria-hidden="true">${icon}</span>${label}
-                        </button>`,
-                    )}
-                  </nav>
-                  <p class="nav-note muted">
-                    A little personality.<br />Everywhere you read.<br /><br /><span
-                      class="footer-credit"
-                      >FONTIFY · BY XDAN</span
-                    >
-                  </p>
-                </aside>
-                <main>
-                  ${{ typography, library, exceptions, rules, preferences }[
-                    section
-                  ]()}
-                </main>
-              </div>`}
+      ><div class="shell" ?inert=${!!(picker || editing)}>
+        ${header()}${initError
+          ? html`<section class="panel" role="alert">
+              <h2>Fontify could not open</h2>
+              <p class="muted">${initError}</p>
+              ${btn("Try again", () => void init(), "filled")}
+            </section>`
+          : !ready
+            ? html`<p class="muted" role="status">
+                Loading your settings and font library…
+              </p>`
+            : popup
+              ? popupView()
+              : html`<div class="layout">
+                  <aside>
+                    <nav class="nav" aria-label="Settings">
+                      ${nav.map(
+                        ([id, icon, label]) =>
+                          html`<button
+                            aria-current=${section === id ? "page" : "false"}
+                            @click=${() => {
+                              section = id;
+                              draw();
+                              void preview();
+                            }}
+                          >
+                            ${navIcon(icon)}<span>${label}</span>
+                          </button>`,
+                      )}
+                    </nav>
+                    <p class="nav-note muted">
+                      Changes save automatically.<br /><br /><span
+                        class="footer-credit"
+                        >Fontify · By XDan</span
+                      >
+                    </p>
+                  </aside>
+                  <main>
+                    ${{ typography, library, exceptions, rules, preferences }[
+                      section
+                    ]()}
+                  </main>
+                </div>`}
       </div>
       ${editing && !picker ? editDialog() : nothing}${pickerDialog()}${toast
         ? html`<div class="toast" role="status">${toast}</div>`
@@ -1382,10 +1458,7 @@ function draw() {
 document.addEventListener("keydown", (e) => {
   if ((picker || editing) && e.key === "Escape") {
     if (picker) closePicker();
-    else {
-      editing = null;
-      draw();
-    }
+    else closeEditor();
   }
   if ((picker || editing) && e.key === "Tab") {
     const modal = document.querySelector("[role=dialog]");
@@ -1416,6 +1489,8 @@ api.storage.onChanged.addListener(async (changes, area) => {
   }
 });
 async function init() {
+  initError = "";
+  draw();
   try {
     s = await getSettings();
     catalogue = (
@@ -1455,9 +1530,13 @@ async function init() {
     draw();
     void preview();
   } catch (error) {
-    tell(`Fontify could not open: ${error.message}`);
+    initError = error.message;
+    draw();
   }
 }
 if (!popup) window.addEventListener("hashchange", () => void init());
+matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
+  if (s.theme === "auto") draw();
+});
 draw();
 void init();

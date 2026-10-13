@@ -44,7 +44,10 @@ for (const browser of ["chrome", "firefox"]) {
   await build({
     entryPoints: ["src/background.js", "src/content.js", "src/ui.js"],
     bundle: true,
-    define: { GOOGLE_FONT_CATEGORIES: JSON.stringify(categories) },
+    define: {
+      GOOGLE_FONT_CATEGORIES: JSON.stringify(categories),
+      FONTIFY_VERSION: JSON.stringify(version),
+    },
     outdir,
     format: "iife",
     target: ["chrome120", "firefox140"],
