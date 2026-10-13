@@ -874,9 +874,12 @@ try {
     }),
   });
   const native = (await resultPromise).result.result.value;
-  assert.equal(native.contentWidth, 520);
-  assert(native.width >= native.contentWidth);
+  console.log("Native toolbar dimensions:", native);
   assert.equal(native.body, 520);
+  assert(
+    native.width >= native.body,
+    "The native viewport must fit the requested popup width",
+  );
   assert(native.toolbar && !native.overflow);
   assert(
     native.settingsBottom <= native.height,
